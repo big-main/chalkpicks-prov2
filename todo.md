@@ -64,6 +64,12 @@
 - [x] Final checkpoint save
 - [x] Deliver to user
 
+## Additional Pages & Features
+- [x] Matchup Analysis page with head-to-head data
+- [x] Subscription Management page with billing history
+- [x] Email notification service with templates
+- [x] Routes for all new pages
+
 ## Deployment
 - [ ] Deploy to Railway (or Render/Vercel)
 - [ ] Configure environment variables

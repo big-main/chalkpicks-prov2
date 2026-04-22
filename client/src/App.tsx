@@ -13,6 +13,8 @@ import UserDashboard from "./pages/UserDashboard";
 import Leaderboard from "./pages/Leaderboard";
 import Pricing from "./pages/Pricing";
 import PaymentSuccess from "./pages/PaymentSuccess";
+import MatchupAnalysis from "./pages/MatchupAnalysis";
+import SubscriptionManagement from "./pages/SubscriptionManagement";
 
 function Router() {
   return (
@@ -26,6 +28,8 @@ function Router() {
       <Route path="/leaderboard" component={Leaderboard} />
       <Route path="/pricing" component={Pricing} />
       <Route path="/payment/success" component={PaymentSuccess} />
+      <Route path="/matchup-analysis" component={MatchupAnalysis} />
+      <Route path="/subscription-management" component={SubscriptionManagement} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
