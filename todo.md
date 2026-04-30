@@ -71,9 +71,13 @@
 - [x] Routes for all new pages
 
 ## Deployment
-- [ ] Deploy to Railway (or Render/Vercel)
-- [ ] Configure environment variables
-- [ ] Set up database on Railway
-- [ ] Configure Stripe webhook endpoint
-- [ ] Set up custom domain
-- [ ] Enable SSL/TLS
+- [x] Create deployment guide for Railway
+- [x] Document environment variables
+- [x] Document database setup
+- [x] Document Stripe webhook configuration
+- [x] Document custom domain setup
+- [x] Document SSL/TLS configuration
+- [x] Remove API Access from yearly subscription
+- [x] Create comprehensive Railway deployment guide
+- [ ] Deploy to Railway (user action)
+- [ ] Configure www.chalkpicks.xyz domain (user action)

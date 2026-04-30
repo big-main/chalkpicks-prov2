@@ -31,7 +31,7 @@ export const PLANS = {
     priceId: "price_yearly",
     amountCents: 19999,
     description: "Maximum savings for pros",
-    features: ["Everything in Monthly", "Early access to new features", "Advanced backtesting", "Custom AI pick generation", "VIP Discord access", "1-on-1 strategy sessions", "API access"],
+    features: ["Everything in Monthly", "Early access to new features", "Advanced backtesting", "Custom AI pick generation", "VIP Discord access", "1-on-1 strategy sessions"],
     badge: "Best Value",
     savings: "Save $16/mo",
   },
