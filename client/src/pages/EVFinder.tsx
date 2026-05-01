@@ -71,10 +71,6 @@ export default function EVFinder() {
     { refetchInterval: 60000, enabled: hasProAccess }
   );
 
-  if (!hasProAccess) {
-    return <Paywall tier="monthly" title="+EV Finder" description="Find positive expected value opportunities across all sportsbooks" />;
-  }
-
   interface EVOpportunity {
     sport: string;
     homeTeam: string;
@@ -88,6 +84,10 @@ export default function EVFinder() {
     ev: number;
   }
   const opportunities = useMemo<EVOpportunity[]>(() => (data?.opportunities ?? []) as EVOpportunity[], [data]);
+
+  if (!hasProAccess) {
+    return <Paywall tier="monthly" title="+EV Finder" description="Find positive expected value opportunities across all sportsbooks" />;
+  }
 
   const handleRefresh = () => {
     setRefreshKey((k) => k + 1);
