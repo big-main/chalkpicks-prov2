@@ -1,4 +1,4 @@
-import { protectedProcedure, publicProcedure, router } from "../_core/trpc";
+import { protectedProcedure, publicProcedure, router, proProcedure } from "../_core/trpc";
 import { z } from "zod/v4";
 import { getDb } from "../db";
 import { backtests, picks } from "../../drizzle/schema";
@@ -6,7 +6,7 @@ import { eq, and, gte, lte, gte as gteOp } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
 
 export const backtestRouter = router({
-  run: protectedProcedure
+  run: proProcedure
     .input(z.object({
       name: z.string().min(1).max(128),
       sportKey: z.string().optional(),
@@ -99,7 +99,7 @@ export const backtestRouter = router({
       };
     }),
 
-  list: protectedProcedure.query(async ({ ctx }) => {
+  list: proProcedure.query(async ({ ctx }) => {
     const db = await getDb();
     if (!db) return [];
     return db.select().from(backtests).where(eq(backtests.userId, ctx.user.id)).orderBy(backtests.createdAt);

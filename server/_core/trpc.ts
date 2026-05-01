@@ -43,3 +43,61 @@ export const adminProcedure = t.procedure.use(
     });
   }),
 );
+
+// Premium procedure: requires active subscription (daily, monthly, or yearly)
+export const premiumProcedure = t.procedure.use(
+  t.middleware(async opts => {
+    const { ctx, next } = opts;
+
+    if (!ctx.user) {
+      throw new TRPCError({ code: "UNAUTHORIZED", message: "Login required" });
+    }
+
+    const isActive = ctx.user.subscriptionTier !== 'free' && (
+      !ctx.user.subscriptionExpiresAt || ctx.user.subscriptionExpiresAt > new Date()
+    );
+
+    if (!isActive) {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Premium subscription required. Upgrade to access this feature.",
+      });
+    }
+
+    return next({
+      ctx: {
+        ...ctx,
+        user: ctx.user,
+      },
+    });
+  }),
+);
+
+// Pro procedure: requires monthly or yearly subscription
+export const proProcedure = t.procedure.use(
+  t.middleware(async opts => {
+    const { ctx, next } = opts;
+
+    if (!ctx.user) {
+      throw new TRPCError({ code: "UNAUTHORIZED", message: "Login required" });
+    }
+
+    const isProActive = (ctx.user.subscriptionTier === 'monthly' || ctx.user.subscriptionTier === 'yearly') && (
+      !ctx.user.subscriptionExpiresAt || ctx.user.subscriptionExpiresAt > new Date()
+    );
+
+    if (!isProActive) {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Monthly Pro or Annual Elite subscription required. Upgrade to access this feature.",
+      });
+    }
+
+    return next({
+      ctx: {
+        ...ctx,
+        user: ctx.user,
+      },
+    });
+  }),
+);

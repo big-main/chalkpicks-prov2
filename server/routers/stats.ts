@@ -1,4 +1,4 @@
-import { publicProcedure, router } from "../_core/trpc";
+import { protectedProcedure, publicProcedure, router, premiumProcedure } from "../_core/trpc";
 import { z } from "zod/v4";
 
 // Mock live sports data — in production, integrate with The Odds API, ESPN API, etc.
@@ -75,13 +75,13 @@ const topPlayers: Record<string, any[]> = {
 };
 
 export const statsRouter = router({
-  liveGames: publicProcedure
+  liveGames: premiumProcedure
     .input(z.object({ sportKey: z.string().optional().default("nfl") }))
     .query(({ input }) => {
       return gamesBySort[input.sportKey] ?? gamesBySort.nfl ?? [];
     }),
 
-  allGames: publicProcedure.query(() => {
+  allGames: premiumProcedure.query(() => {
     return Object.entries(gamesBySort).flatMap(([sport, games]) =>
       games.map(g => ({ ...g, sportKey: sport }))
     );

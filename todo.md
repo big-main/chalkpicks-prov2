@@ -142,3 +142,20 @@
 - [x] Apply neon cyber theme to pricing page
 - [x] Update App.tsx to route /pricing to new Stripe pricing page
 - [x] Verify Stripe checkout session creation end-to-end
+
+## Bug Fixes — OAuth & Site Stability
+- [ ] Fix "Permission denied: Redirect URI is not set" OAuth error on login
+- [ ] Audit all pages for runtime errors and fix any found
+
+
+## Paywall Implementation — Lock Premium Features
+- [x] Add subscription tier checks to backend routers (EV Finder, Tools, Leaderboard, Live Stats, Backtesting)
+- [x] Create paywall component for frontend locked pages
+- [x] Lock EVFinder page behind "Monthly Pro" or higher tier
+- [x] Lock Tools page behind "Monthly Pro" or higher tier
+- [x] Lock Leaderboard page behind "Daily Pass" or higher tier
+- [x] Lock Live Stats page behind "Daily Pass" or higher tier
+- [x] Lock Backtesting page behind "Monthly Pro" or higher tier
+- [x] Keep Picks page and Home page free for all users
+- [x] Add upgrade CTA buttons throughout the site (Paywall component)
+- [x] Test paywall flow end-to-end (all 74 tests passing)

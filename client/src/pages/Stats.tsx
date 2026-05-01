@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import Navbar from "@/components/Navbar";
+import { Paywall } from "@/components/Paywall";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -21,12 +22,19 @@ const SPORTS = [
 ];
 
 export default function Stats() {
+  const { data: subscription } = trpc.subscription.mySubscription.useQuery();
   const [sport, setSport] = useState("nfl");
   const [search, setSearch] = useState("");
 
-  const { data: liveGames, isLoading: gamesLoading } = trpc.stats.liveGames.useQuery({ sportKey: sport });
-  const { data: players, isLoading: playersLoading } = trpc.stats.topPlayers.useQuery({ sportKey: sport, limit: 12 });
-  const { data: injuries } = trpc.stats.injuryReport.useQuery({ sportKey: sport });
+  const hasPremiumAccess = subscription?.isActive && (subscription?.tier === 'daily' || subscription?.tier === 'monthly' || subscription?.tier === 'yearly');
+
+  const { data: liveGames, isLoading: gamesLoading } = trpc.stats.liveGames.useQuery({ sportKey: sport }, { enabled: hasPremiumAccess });
+  const { data: players, isLoading: playersLoading } = trpc.stats.topPlayers.useQuery({ sportKey: sport, limit: 12 }, { enabled: hasPremiumAccess });
+  const { data: injuries } = trpc.stats.injuryReport.useQuery({ sportKey: sport }, { enabled: hasPremiumAccess });
+
+  if (!hasPremiumAccess) {
+    return <Paywall tier="daily" title="Live Stats" description="Real-time game scores, odds, and player statistics" />;
+  }
 
   const filteredPlayers = players?.filter((p: any) =>
     !search || p.name.toLowerCase().includes(search.toLowerCase()) || p.team.toLowerCase().includes(search.toLowerCase())

@@ -1,4 +1,4 @@
-import { publicProcedure, protectedProcedure, router } from "../_core/trpc";
+import { protectedProcedure, publicProcedure, router, premiumProcedure } from "../_core/trpc";
 import { z } from "zod/v4";
 import { getDb } from "../db";
 import { leaderboard, users } from "../../drizzle/schema";
@@ -18,7 +18,7 @@ const mockLeaderboard = [
 ];
 
 export const leaderboardRouter = router({
-  list: publicProcedure
+  list: premiumProcedure
     .input(z.object({
       period: z.enum(["all", "monthly", "weekly"]).optional().default("all"),
       limit: z.number().optional().default(10),
@@ -50,7 +50,7 @@ export const leaderboardRouter = router({
       return entries;
     }),
 
-  myRank: protectedProcedure.query(async ({ ctx }) => {
+  myRank: premiumProcedure.query(async ({ ctx }) => {
     const db = await getDb();
     if (!db) return null;
 

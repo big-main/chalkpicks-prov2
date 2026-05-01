@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import { trpc } from "@/lib/trpc";
+import { Paywall } from "@/components/Paywall";
 import { Calculator, Layers, CloudLightning, TrendingUp, RefreshCw, Info, Zap, Eye } from "lucide-react";
 
 const NeonCard = ({ children, className = "", style = {} }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) => (
@@ -575,7 +576,14 @@ const TOOLS = [
 ];
 
 export default function Tools() {
+  const { data: subscription } = trpc.subscription.mySubscription.useQuery();
   const [activeTool, setActiveTool] = useState("kelly");
+
+  const hasProAccess = subscription?.isActive && (subscription?.tier === 'monthly' || subscription?.tier === 'yearly');
+
+  if (!hasProAccess) {
+    return <Paywall tier="monthly" title="Advanced Tools" description="Access Kelly Criterion, Parlay Optimizer, and Weather Impact models" />;
+  }
 
   return (
     <div className="min-h-screen" style={{ background: "#080814", color: "#e8e8f0" }}>

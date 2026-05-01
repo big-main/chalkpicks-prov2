@@ -3,6 +3,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { getLoginUrl } from "@/const";
 import Navbar from "@/components/Navbar";
 import { trpc } from "@/lib/trpc";
+import { Paywall } from "@/components/Paywall";
 import { RefreshCw, TrendingUp, Zap, Filter, Lock, ArrowRight, Info } from "lucide-react";
 import { Link } from "wouter";
 
@@ -58,14 +59,21 @@ const NeonCard = ({ children, className = "", style = {} }: { children: React.Re
 
 export default function EVFinder() {
   const { isAuthenticated } = useAuth();
+  const { data: subscription } = trpc.subscription.mySubscription.useQuery();
   const [sport, setSport] = useState("all");
   const [minEV, setMinEV] = useState(0);
   const [refreshKey, setRefreshKey] = useState(0);
 
+  const hasProAccess = subscription?.isActive && (subscription?.tier === 'monthly' || subscription?.tier === 'yearly');
+
   const { data, isLoading, refetch } = trpc.odds.getEVOpportunities.useQuery(
     { sport, minEV },
-    { refetchInterval: 60000 }
+    { refetchInterval: 60000, enabled: hasProAccess }
   );
+
+  if (!hasProAccess) {
+    return <Paywall tier="monthly" title="+EV Finder" description="Find positive expected value opportunities across all sportsbooks" />;
+  }
 
   interface EVOpportunity {
     sport: string;

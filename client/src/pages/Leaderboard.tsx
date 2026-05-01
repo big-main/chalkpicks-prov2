@@ -2,6 +2,7 @@ import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
 import Navbar from "@/components/Navbar";
+import { Paywall } from "@/components/Paywall";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -9,11 +10,18 @@ import { Trophy, TrendingUp, TrendingDown, Users, Target, DollarSign, Crown } fr
 
 export default function Leaderboard() {
   const { isAuthenticated, user } = useAuth();
+  const { data: subscription } = trpc.subscription.mySubscription.useQuery();
   const [period, setPeriod] = useState<"all" | "monthly" | "weekly">("all");
 
-  const { data: entries, isLoading } = trpc.leaderboard.list.useQuery({ period, limit: 25 });
-  const { data: stats } = trpc.leaderboard.stats.useQuery();
-  const { data: myRank } = trpc.leaderboard.myRank.useQuery(undefined, { enabled: isAuthenticated });
+  const hasPremiumAccess = subscription?.isActive && (subscription?.tier === 'daily' || subscription?.tier === 'monthly' || subscription?.tier === 'yearly');
+
+  const { data: entries, isLoading } = trpc.leaderboard.list.useQuery({ period, limit: 25 }, { enabled: hasPremiumAccess });
+  const { data: stats } = trpc.leaderboard.stats.useQuery(undefined, { enabled: hasPremiumAccess });
+  const { data: myRank } = trpc.leaderboard.myRank.useQuery(undefined, { enabled: isAuthenticated && hasPremiumAccess });
+
+  if (!hasPremiumAccess) {
+    return <Paywall tier="daily" title="Leaderboard" description="Track top bettors and compete on the global leaderboard" />;
+  }
 
   return (
     <div className="min-h-screen bg-background">

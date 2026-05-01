@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { publicProcedure, protectedProcedure, router } from "../_core/trpc";
+import { publicProcedure, protectedProcedure, router, proProcedure, premiumProcedure } from "../_core/trpc";
 import { invokeLLM } from "../_core/llm";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -86,8 +86,8 @@ function generateMockOdds(sport: string) {
 // ─── Router ──────────────────────────────────────────────────────────────────
 
 export const oddsRouter = router({
-  // +EV Opportunities
-  getEVOpportunities: publicProcedure
+  // +EV Opportunities (Pro only)
+  getEVOpportunities: proProcedure
     .input(z.object({ sport: z.string().default("all"), minEV: z.number().default(0) }))
     .query(async ({ input }) => {
       const games = generateMockOdds(input.sport);
@@ -155,8 +155,8 @@ export const oddsRouter = router({
       };
     }),
 
-  // Live odds comparison across books
-  getLiveOdds: publicProcedure
+  // Live odds comparison across books (Premium only)
+  getLiveOdds: premiumProcedure
     .input(z.object({ sport: z.string().default("basketball_nba") }))
     .query(async ({ input }) => {
       const games = generateMockOdds(input.sport);
@@ -176,8 +176,8 @@ export const oddsRouter = router({
       };
     }),
 
-  // Steam moves (sharp line movement detector)
-  getSteamMoves: publicProcedure
+  // Steam moves (sharp line movement detector) (Premium only)
+  getSteamMoves: premiumProcedure
     .input(z.object({ sport: z.string().default("all"), hours: z.number().default(3) }))
     .query(async ({ input }) => {
       const sports = input.sport === "all"
@@ -195,8 +195,8 @@ export const oddsRouter = router({
       return { steamMoves, updatedAt: new Date().toISOString() };
     }),
 
-  // Public betting percentages
-  getPublicBetting: publicProcedure
+  // Public betting percentages (Premium only)
+  getPublicBetting: premiumProcedure
     .input(z.object({ sport: z.string().default("basketball_nba") }))
     .query(async ({ input }) => {
       const games = generateMockOdds(input.sport);
@@ -226,8 +226,8 @@ export const oddsRouter = router({
       };
     }),
 
-  // Kelly Criterion calculator
-  calculateKelly: publicProcedure
+  // Kelly Criterion calculator (Premium only)
+  calculateKelly: premiumProcedure
     .input(z.object({
       bankroll: z.number().positive(),
       odds: z.number(),
@@ -261,8 +261,8 @@ export const oddsRouter = router({
       };
     }),
 
-  // Parlay optimizer
-  optimizeParlay: publicProcedure
+  // Parlay optimizer (Pro only)
+  optimizeParlay: proProcedure
     .input(z.object({
       legs: z.array(z.object({
         description: z.string(),
