@@ -11,12 +11,15 @@ import Stats from "./pages/Stats";
 import Backtesting from "./pages/Backtesting";
 import UserDashboard from "./pages/UserDashboard";
 import Leaderboard from "./pages/Leaderboard";
+import Pricing from "./pages/Pricing";
 import PayPalPricing from "./pages/PayPalPricing";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import MatchupAnalysis from "./pages/MatchupAnalysis";
 import SubscriptionManagement from "./pages/SubscriptionManagement";
 import FeedbackAnalytics from "./pages/FeedbackAnalytics";
-import Notifications from "./pages/Notifications";
+import Notifications from "@/pages/Notifications";
+import EVFinder from "@/pages/EVFinder";
+import Tools from "@/pages/Tools";
 
 function Router() {
   return (
@@ -28,12 +31,15 @@ function Router() {
       <Route path="/backtesting" component={Backtesting} />
       <Route path="/dashboard" component={UserDashboard} />
       <Route path="/leaderboard" component={Leaderboard} />
-      <Route path="/pricing" component={PayPalPricing} />
+      <Route path="/pricing" component={Pricing} />
+      <Route path="/pricing-paypal" component={PayPalPricing} />
       <Route path="/payment/success" component={PaymentSuccess} />
       <Route path="/matchup-analysis" component={MatchupAnalysis} />
       <Route path="/subscription-management" component={SubscriptionManagement} />
       <Route path="/feedback-analytics" component={FeedbackAnalytics} />
       <Route path="/notifications" component={Notifications} />
+      <Route path="/ev-finder" component={EVFinder} />
+      <Route path="/tools" component={Tools} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

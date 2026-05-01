@@ -83,6 +83,23 @@
 - [x] Add Feedback Analytics link to Navbar
 - [ ] Update AI pick generation to consider feedback (future enhancement)
 
+## Phase 2 Upgrade — Design B Neon Cyber + Real Data + Unique Features
+- [x] Apply Design B neon cyber theme to entire site (index.css, Navbar, Home, all pages)
+- [x] Integrate The Odds API for real live odds from 10+ sportsbooks (mock + real API ready)
+- [x] Build live odds comparison table (best line across books)
+- [x] Build line movement tracker (opening line vs current line)
+- [x] Build steam move detector (sudden sharp line movement alerts)
+- [x] Build +EV (positive expected value) finder page
+- [ ] Build CLV (closing line value) tracker for user bets
+- [x] Build public betting % display (where the public money is going)
+- [x] Build Kelly Criterion bankroll calculator tool
+- [ ] Build weather impact model for outdoor games (NFL, MLB)
+- [x] Build AI parlay optimizer (correlation-aware)
+- [ ] Add real scores/results feed via API
+- [ ] Wire real odds data into AI picks engine
+- [x] Add Sharp vs Public split indicator on picks (via steam moves page)
+- [ ] Add live game scores widget in navbar
+
 ## Payment System Migration (NEW)
 - [x] Replace Stripe with PayPal integration
 - [x] Create PayPal subscription router with all procedures
@@ -119,3 +136,9 @@
 - [x] Add notification preferences to user dashboard
 - [x] Write tests for notification system (15 tests passing)
 - [x] All 52 tests passing across 4 test files
+
+## Stripe Pricing Switch
+- [x] Rewrite /pricing page to use Stripe checkout (replace PayPal mock)
+- [x] Apply neon cyber theme to pricing page
+- [x] Update App.tsx to route /pricing to new Stripe pricing page
+- [x] Verify Stripe checkout session creation end-to-end

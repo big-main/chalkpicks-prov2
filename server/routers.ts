@@ -11,6 +11,7 @@ import { subscriptionRouter } from "./routers/subscription";
 import { notificationsRouter } from "./routers/notificationsRouter";
 import { feedbackRouter } from "./routers/feedback";
 import { paypalRouter } from "./routers/paypal";
+import { oddsRouter } from "./routers/odds";
 
 export const appRouter = router({
   system: systemRouter,
@@ -31,6 +32,7 @@ export const appRouter = router({
   notifications: notificationsRouter,
   feedback: feedbackRouter,
   paypal: paypalRouter,
+  odds: oddsRouter,
 });
 
 export type AppRouter = typeof appRouter;
