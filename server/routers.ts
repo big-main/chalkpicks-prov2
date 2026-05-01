@@ -10,6 +10,7 @@ import { leaderboardRouter } from "./routers/leaderboard";
 import { subscriptionRouter } from "./routers/subscription";
 import { notificationsRouter } from "./routers/notifications";
 import { feedbackRouter } from "./routers/feedback";
+import { paypalRouter } from "./routers/paypal";
 
 export const appRouter = router({
   system: systemRouter,
@@ -29,6 +30,7 @@ export const appRouter = router({
   subscription: subscriptionRouter,
   notifications: notificationsRouter,
   feedback: feedbackRouter,
+  paypal: paypalRouter,
 });
 
 export type AppRouter = typeof appRouter;

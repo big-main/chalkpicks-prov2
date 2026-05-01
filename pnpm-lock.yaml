@@ -25,6 +25,9 @@ importers:
       '@hookform/resolvers':
         specifier: ^5.2.2
         version: 5.2.2(react-hook-form@7.64.0(react@19.2.1))
+      '@paypal/checkout-server-sdk':
+        specifier: ^1.0.3
+        version: 1.0.3
       '@radix-ui/react-accordion':
         specifier: ^1.2.12
         version: 1.2.12(@types/react-dom@19.2.1(@types/react@19.2.1))(@types/react@19.2.1)(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
@@ -1057,6 +1060,15 @@ packages:
 
   '@mermaid-js/parser@0.6.3':
     resolution: {integrity: sha512-lnjOhe7zyHjc+If7yT4zoedx2vo4sHaTmtkl1+or8BRTnCtDmcTpAjpzDSfCZrshM5bCoz0GyidzadJAH1xobA==}
+
+  '@paypal/checkout-server-sdk@1.0.3':
+    resolution: {integrity: sha512-UEdq8akEdMz0Vs4qoQFU2gMp8PpyE/HKyMwiZuK4vIWUKl8jfd1fWKjQN5cDFm9NkFUIp5U7h++rdMOVj9WMNA==}
+    engines: {node: '>=8'}
+    deprecated: 'Package no longer supported. The author suggests using the @paypal/paypal-server-sdk package instead: https://www.npmjs.com/package/@paypal/paypal-server-sdk. Contact Support at https://www.npmjs.com/support for more info.'
+
+  '@paypal/paypalhttp@1.0.1':
+    resolution: {integrity: sha512-DC7AHxTT7drF6dUi3YaFdPVuT15sIkpD5H2eHmdtFgxM4UanS1o1ZDfMhR9mpxd8o+X6pz2r+EZVRRq+n1cssQ==}
+    engines: {node: '>=4'}
 
   '@radix-ui/number@1.1.1':
     resolution: {integrity: sha512-MkKCwxlXTgz6CFoJx3pCwn07GKp36+aZyu/u2Ln2VrA5DcdyCZkASEDBTd8x5whTQQL5CiYf4prXKLcgQdv29g==}
@@ -5264,6 +5276,12 @@ snapshots:
   '@mermaid-js/parser@0.6.3':
     dependencies:
       langium: 3.3.1
+
+  '@paypal/checkout-server-sdk@1.0.3':
+    dependencies:
+      '@paypal/paypalhttp': 1.0.1
+
+  '@paypal/paypalhttp@1.0.1': {}
 
   '@radix-ui/number@1.1.1': {}
 

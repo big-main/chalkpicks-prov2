@@ -78,19 +78,24 @@
 - [x] Implement sentiment analysis for comments
 - [x] Add feedback display on pick detail page
 - [x] Create feedback leaderboard (best-rated picks)
-- [x] Add tests for feedback system
+- [x] Add tests for feedback system (6 tests passing)
+- [x] Integrate PickFeedback component on PickDetail page
+- [x] Add Feedback Analytics link to Navbar
 - [ ] Update AI pick generation to consider feedback (future enhancement)
 
-## Deployment
-- [x] Create deployment guide for Railway
-- [x] Document environment variables
-- [x] Document database setup
-- [x] Document Stripe webhook configuration
-- [x] Document custom domain setup
-- [x] Document SSL/TLS configuration
-- [x] Remove API Access from yearly subscription
-- [x] Create comprehensive Railway deployment guide
-- [x] Remove API Access from yearly subscription
-- [x] Create comprehensive Railway deployment guide
-- [ ] Deploy to Railway (user action)
-- [ ] Configure www.chalkpicks.xyz domain (user action)
+## Payment System Migration (NEW)
+- [x] Replace Stripe with PayPal integration
+- [x] Create PayPal subscription router with all procedures
+- [x] Create PayPalPricing page with PayPal checkout flow
+- [x] Create PayPal webhook handler (/api/paypal/webhook)
+- [x] Register PayPal webhook in server
+- [x] All 37 tests passing with PayPal integration
+- [x] PayPal documentation in deployment guide
+
+## Deployment to Railway
+- [x] Create Railway deployment guide with PayPal setup
+- [x] Document chalkpicks.ml free domain setup
+- [x] Document PayPal webhook configuration
+- [ ] Deploy to Railway from GitHub (user action)
+- [ ] Configure chalkpicks.ml domain (user action)
+- [ ] Test live deployment (user action)

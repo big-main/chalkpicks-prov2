@@ -8,6 +8,7 @@ import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import { registerStripeWebhook } from "../webhook";
+import { registerPayPalWebhook } from "../paypal-webhook";
 import { startScheduler } from "../scheduler";
 
 function isPortAvailable(port: number): Promise<boolean> {
@@ -32,8 +33,9 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 async function startServer() {
   const app = express();
   const server = createServer(app);
-  // Register Stripe webhook BEFORE body parsers (needs raw body)
+  // Register webhooks BEFORE body parsers (needs raw body)
   registerStripeWebhook(app);
+  registerPayPalWebhook(app);
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));

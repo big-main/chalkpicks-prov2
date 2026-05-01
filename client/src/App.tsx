@@ -11,7 +11,7 @@ import Stats from "./pages/Stats";
 import Backtesting from "./pages/Backtesting";
 import UserDashboard from "./pages/UserDashboard";
 import Leaderboard from "./pages/Leaderboard";
-import Pricing from "./pages/Pricing";
+import PayPalPricing from "./pages/PayPalPricing";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import MatchupAnalysis from "./pages/MatchupAnalysis";
 import SubscriptionManagement from "./pages/SubscriptionManagement";
@@ -27,7 +27,7 @@ function Router() {
       <Route path="/backtesting" component={Backtesting} />
       <Route path="/dashboard" component={UserDashboard} />
       <Route path="/leaderboard" component={Leaderboard} />
-      <Route path="/pricing" component={Pricing} />
+      <Route path="/pricing" component={PayPalPricing} />
       <Route path="/payment/success" component={PaymentSuccess} />
       <Route path="/matchup-analysis" component={MatchupAnalysis} />
       <Route path="/subscription-management" component={SubscriptionManagement} />
