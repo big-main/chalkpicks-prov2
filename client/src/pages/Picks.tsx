@@ -187,8 +187,7 @@ export default function Picks() {
                 <SelectValue placeholder="All Tiers" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Tiers</SelectItem>
-                <SelectItem value="free">Free Only</SelectItem>
+                <SelectItem value="all">All Picks</SelectItem>
                 <SelectItem value="premium">Premium Only</SelectItem>
               </SelectContent>
             </Select>

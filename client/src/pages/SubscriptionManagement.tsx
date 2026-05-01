@@ -97,15 +97,11 @@ export default function SubscriptionManagement() {
                         <>
                           <li className="flex items-center gap-2 text-sm text-muted-foreground">
                             <CheckCircle2 className="w-4 h-4 text-green-400" />
-                            Access to free daily picks
+                            No active subscription
                           </li>
                           <li className="flex items-center gap-2 text-sm text-muted-foreground">
                             <CheckCircle2 className="w-4 h-4 text-green-400" />
-                            Public leaderboard access
-                          </li>
-                          <li className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <CheckCircle2 className="w-4 h-4 text-green-400" />
-                            Basic stats and trends
+                            Upgrade to access premium features
                           </li>
                         </>
                       )}
@@ -113,7 +109,7 @@ export default function SubscriptionManagement() {
                         <>
                           <li className="flex items-center gap-2 text-sm text-muted-foreground">
                             <CheckCircle2 className="w-4 h-4 text-green-400" />
-                            All free features
+                            All standard features
                           </li>
                           <li className="flex items-center gap-2 text-sm text-muted-foreground">
                             <CheckCircle2 className="w-4 h-4 text-green-400" />

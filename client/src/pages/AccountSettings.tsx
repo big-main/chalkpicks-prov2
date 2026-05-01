@@ -141,7 +141,7 @@ export default function AccountSettings() {
                   <div>
                     <Label style={{ color: "#e8e8f0", fontSize: "0.875rem", fontWeight: 500 }}>Account Type</Label>
                     <div style={{ marginTop: "0.5rem", padding: "0.75rem", background: "rgba(0,212,255,0.1)", border: "1px solid rgba(0,212,255,0.2)", borderRadius: "6px", color: "#00d4ff", fontWeight: 600 }}>
-                      {user?.subscriptionTier === "free" ? "Free User" : `${user?.subscriptionTier?.charAt(0).toUpperCase()}${user?.subscriptionTier?.slice(1)} Subscriber`}
+                      {user?.subscriptionTier === "free" ? "No Active Subscription" : `${user?.subscriptionTier?.charAt(0).toUpperCase()}${user?.subscriptionTier?.slice(1)} Subscriber`}
                     </div>
                   </div>
 

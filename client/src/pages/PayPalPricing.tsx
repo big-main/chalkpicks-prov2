@@ -155,8 +155,8 @@ export default function PayPalPricing() {
                   a: "We accept all major payment methods through PayPal, including credit cards, debit cards, and PayPal balance.",
                 },
                 {
-                  q: "Is there a free trial?",
-                  a: "Yes! All new users get access to free daily picks. Subscribe to unlock advanced features.",
+                  q: "Do you offer a trial?",
+                  a: "No trial needed. Start with our Daily Pass ($9.99/day) to test the platform risk-free with our 7-day money-back guarantee.",
                 },
                 {
                   q: "What if I'm not satisfied?",

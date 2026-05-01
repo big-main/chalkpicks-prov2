@@ -239,7 +239,7 @@ export default function Home() {
                   }}
                   onClick={() => (window.location.href = getLoginUrl())}
                 >
-                  START FREE TODAY <ArrowRight className="w-4 h-4" />
+                  GET STARTED <ArrowRight className="w-4 h-4" />
                 </button>
               )}
               <Link href="/ev-finder">
@@ -254,7 +254,7 @@ export default function Home() {
                     cursor: "pointer",
                   }}
                 >
-                  TRY +EV FINDER FREE
+                  EXPLORE +EV FINDER
                 </button>
               </Link>
             </div>
@@ -439,7 +439,7 @@ export default function Home() {
                         color: pick.tier === "premium" ? "#00ff88" : "#94a3b8",
                       }}
                     >
-                      {pick.tier === "premium" ? "⚡ PREMIUM" : "FREE"}
+                      {pick.tier === "premium" ? "⚡ PREMIUM" : "STANDARD"}
                     </div>
                     <span
                       className="text-xs font-bold tracking-widest"
@@ -660,7 +660,7 @@ export default function Home() {
             <span style={{ color: "#00ff88", textShadow: "0 0 20px rgba(0,255,136,0.5)" }}>SMARTER?</span>
           </h2>
           <p style={{ color: "rgba(180,180,210,0.7)", fontSize: "1.1rem", marginBottom: "2rem", maxWidth: "480px", margin: "0 auto 2rem" }}>
-            Join 12,847+ members who use ChalkPicks Pro to gain a real, mathematical edge. Start free, upgrade when you're ready.
+            Join 12,847+ members who use ChalkPicks Pro to gain a real, mathematical edge. Choose your plan and start winning.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
             {isAuthenticated ? (
@@ -694,7 +694,7 @@ export default function Home() {
                 }}
                 onClick={() => (window.location.href = getLoginUrl())}
               >
-                GET STARTED FREE <ArrowRight className="w-4 h-4" />
+                GET STARTED <ArrowRight className="w-4 h-4" />
               </button>
             )}
             <Link href="/pricing">
@@ -715,7 +715,7 @@ export default function Home() {
           </div>
           <div className="flex flex-wrap items-center justify-center gap-6 text-xs" style={{ color: "rgba(140,140,170,0.7)" }}>
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-3.5 h-3.5" style={{ color: "#00ff88" }} /> No credit card for free tier
+              <CheckCircle2 className="w-3.5 h-3.5" style={{ color: "#00ff88" }} /> Secure Stripe checkout
             </span>
             <span className="flex items-center gap-1.5">
               <CheckCircle2 className="w-3.5 h-3.5" style={{ color: "#00ff88" }} /> Cancel anytime
