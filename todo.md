@@ -99,9 +99,9 @@
 - [x] Create comprehensive MAIN_INTEGRATION.md combining all guides
 - [x] Integrate Superpowers development practices
 - [x] Add AI agent guidelines and best practices
-- [ ] Deploy to Railway from GitHub (user action)
-- [ ] Configure chalkpicks.ml domain (user action)
-- [ ] Test live deployment (user action)
+- [ ] Deploy to Railway from GitHub (user action — follow RAILWAY_DEPLOYMENT_PAYPAL.md)
+- [ ] Register and configure chalkpicks.ml domain (user action — freenom.com + Railway DNS)
+- [ ] Test live Railway deployment (user action — after deploy)
 
 ## Custom Notification System (COMPLETE)
 - [x] Add notificationPreferences table to schema
