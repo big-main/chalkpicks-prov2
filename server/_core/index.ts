@@ -30,6 +30,9 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 }
 
 async function startServer() {
+  if (!process.env.JWT_SECRET) {
+    throw new Error("JWT_SECRET environment variable is required but not set");
+  }
   const app = express();
   const server = createServer(app);
   // Register webhooks BEFORE body parsers (needs raw body)

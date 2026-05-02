@@ -17,7 +17,13 @@ import { feedbackRouter } from "./routers/feedback";
 import { paypalRouter } from "./routers/paypal";
 import { oddsRouter } from "./routers/odds";
 import * as db from "./db";
+import type { User } from "../drizzle/schema";
 import type { Response, Request } from "express";
+
+function safeUser(user: User) {
+  const { passwordHash: _, ...rest } = user;
+  return rest;
+}
 
 async function issueSessionCookie(req: Request, res: Response, userId: number, name: string) {
   const sessionToken = await sdk.createSessionToken(userId, name, { expiresInMs: ONE_YEAR_MS });
@@ -47,13 +53,13 @@ export const appRouter = router({
 
         await issueSessionCookie(ctx.req, ctx.res, user.id, user.name ?? input.name);
 
-        return user;
+        return safeUser(user);
       }),
 
     login: publicProcedure
       .input(z.object({
         email: z.string().email(),
-        password: z.string(),
+        password: z.string().min(1).max(1024),
       }))
       .mutation(async ({ input, ctx }) => {
         const user = await db.getUserByEmail(input.email);
@@ -64,7 +70,7 @@ export const appRouter = router({
 
         await issueSessionCookie(ctx.req, ctx.res, user!.id, user!.name ?? "");
 
-        return user;
+        return safeUser(user!);
       }),
 
     logout: publicProcedure.mutation(({ ctx }) => {
