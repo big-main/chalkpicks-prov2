@@ -37,6 +37,34 @@ async function analyzeSentiment(comment: string): Promise<"positive" | "neutral"
   }
 }
 
+async function getPicksByRating(limit: number, minFeedback: number, order: "asc" | "desc") {
+  const db = await getDb();
+  if (!db) return [];
+
+  const [allPicks, allFeedback] = await Promise.all([
+    db.select().from(picks),
+    db.select().from(pickFeedback),
+  ]);
+
+  const feedbackByPickId = new Map<number, typeof allFeedback>();
+  for (const fb of allFeedback) {
+    const arr = feedbackByPickId.get(fb.pickId) ?? [];
+    arr.push(fb);
+    feedbackByPickId.set(fb.pickId, arr);
+  }
+
+  return allPicks
+    .map((pick) => {
+      const feedback = feedbackByPickId.get(pick.id) ?? [];
+      if (feedback.length < minFeedback) return null;
+      const avgRating = feedback.reduce((sum, f) => sum + f.rating, 0) / feedback.length;
+      return { ...pick, avgRating, feedbackCount: feedback.length };
+    })
+    .filter((p): p is NonNullable<typeof p> => p !== null)
+    .sort((a, b) => order === "desc" ? b.avgRating - a.avgRating : a.avgRating - b.avgRating)
+    .slice(0, limit);
+}
+
 export const feedbackRouter = router({
   /**
    * Submit feedback for a pick
@@ -179,71 +207,13 @@ export const feedbackRouter = router({
     };
   }),
 
-  /**
-   * Get top-rated picks
-   */
   getTopRatedPicks: publicProcedure
     .input(z.object({ limit: z.number().default(10), minFeedback: z.number().default(3) }))
-    .query(async ({ input }) => {
-      const db = await getDb();
-      if (!db) return [];
+    .query(({ input }) => getPicksByRating(input.limit, input.minFeedback, "desc")),
 
-      const [allPicks, allFeedback] = await Promise.all([
-        db.select().from(picks),
-        db.select().from(pickFeedback),
-      ]);
-
-      const feedbackByPickId = new Map<number, typeof allFeedback>();
-      for (const fb of allFeedback) {
-        const arr = feedbackByPickId.get(fb.pickId) ?? [];
-        arr.push(fb);
-        feedbackByPickId.set(fb.pickId, arr);
-      }
-
-      return allPicks
-        .map((pick) => {
-          const feedback = feedbackByPickId.get(pick.id) ?? [];
-          if (feedback.length < input.minFeedback) return null;
-          const avgRating = feedback.reduce((sum, f) => sum + f.rating, 0) / feedback.length;
-          return { ...pick, avgRating, feedbackCount: feedback.length };
-        })
-        .filter((p): p is NonNullable<typeof p> => p !== null)
-        .sort((a, b) => b.avgRating - a.avgRating)
-        .slice(0, input.limit);
-    }),
-
-  /**
-   * Get worst-rated picks (for improvement)
-   */
   getWorstRatedPicks: publicProcedure
     .input(z.object({ limit: z.number().default(10), minFeedback: z.number().default(3) }))
-    .query(async ({ input }) => {
-      const db = await getDb();
-      if (!db) return [];
-
-      const [allPicks, allFeedback] = await Promise.all([
-        db.select().from(picks),
-        db.select().from(pickFeedback),
-      ]);
-
-      const feedbackByPickId = new Map<number, typeof allFeedback>();
-      for (const fb of allFeedback) {
-        const arr = feedbackByPickId.get(fb.pickId) ?? [];
-        arr.push(fb);
-        feedbackByPickId.set(fb.pickId, arr);
-      }
-
-      return allPicks
-        .map((pick) => {
-          const feedback = feedbackByPickId.get(pick.id) ?? [];
-          if (feedback.length < input.minFeedback) return null;
-          const avgRating = feedback.reduce((sum, f) => sum + f.rating, 0) / feedback.length;
-          return { ...pick, avgRating, feedbackCount: feedback.length };
-        })
-        .filter((p): p is NonNullable<typeof p> => p !== null)
-        .sort((a, b) => a.avgRating - b.avgRating)
-        .slice(0, input.limit);
-    }),
+    .query(({ input }) => getPicksByRating(input.limit, input.minFeedback, "asc")),
 
   /**
    * Delete feedback (user can delete their own, admin can delete any)
