@@ -1,5 +1,4 @@
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
@@ -237,7 +236,7 @@ export default function Home() {
                     border: "none",
                     cursor: "pointer",
                   }}
-                  onClick={() => (window.location.href = getLoginUrl())}
+                  onClick={() => (window.location.href = "/signup")}
                 >
                   GET STARTED <ArrowRight className="w-4 h-4" />
                 </button>
@@ -692,7 +691,7 @@ export default function Home() {
                   border: "none",
                   cursor: "pointer",
                 }}
-                onClick={() => (window.location.href = getLoginUrl())}
+                onClick={() => (window.location.href = "/signup")}
               >
                 GET STARTED <ArrowRight className="w-4 h-4" />
               </button>

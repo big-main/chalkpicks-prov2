@@ -12,7 +12,6 @@ import { Separator } from "@/components/ui/separator";
 import { toast } from "sonner";
 import { Bell, Mail, MessageSquare, CheckCircle, AlertCircle, Clock, Trophy, TrendingUp, Shield, Zap, Settings } from "lucide-react";
 import Navbar from "@/components/Navbar";
-import { getLoginUrl } from "@/const";
 
 const notifTypeIcons: Record<string, React.ReactNode> = {
   login_alert: <Shield className="w-4 h-4 text-yellow-400" />,
@@ -111,7 +110,7 @@ export default function Notifications() {
               <h2 className="text-xl font-bold mb-2">Sign In Required</h2>
               <p className="text-muted-foreground mb-6">Sign in to manage your notification preferences.</p>
               <Button asChild className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-black font-bold">
-                <a href={getLoginUrl()}>Sign In</a>
+                <a href="/login">Sign In</a>
               </Button>
             </CardContent>
           </Card>

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { trpc } from "@/lib/trpc";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
 import Navbar from "@/components/Navbar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -87,7 +86,7 @@ export default function UserDashboard() {
           <Trophy className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
           <h2 className="font-display text-3xl tracking-wider mb-3">YOUR DASHBOARD</h2>
           <p className="text-muted-foreground mb-6">Sign in to track your bets and view your analytics.</p>
-          <a href={getLoginUrl()}>
+          <a href="/login">
             <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold">Sign In</Button>
           </a>
         </div>

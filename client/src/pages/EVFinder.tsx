@@ -1,6 +1,5 @@
 import { useState, useMemo } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
 import Navbar from "@/components/Navbar";
 import { trpc } from "@/lib/trpc";
 import { Paywall } from "@/components/Paywall";
@@ -317,7 +316,7 @@ export default function EVFinder() {
               Premium members get real-time alerts when +EV opportunities appear, historical EV tracking, and Kelly criterion sizing for each bet.
             </p>
             <button
-              onClick={() => (window.location.href = getLoginUrl())}
+              onClick={() => (window.location.href = "/login")}
               className="flex items-center gap-2 mx-auto px-6 py-2.5 text-sm font-bold tracking-wider"
               style={{
                 background: "#00ff88",

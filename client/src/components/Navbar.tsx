@@ -1,5 +1,4 @@
 import { useAuth } from "@/_core/hooks/useAuth";
-import { getLoginUrl } from "@/const";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -268,7 +267,7 @@ export default function Navbar() {
                     border: "none",
                     cursor: "pointer",
                   }}
-                  onClick={() => (window.location.href = getLoginUrl())}
+                  onClick={() => (window.location.href = "/signup")}
                 >
                   LAUNCH APP FREE
                 </button>

@@ -136,7 +136,7 @@ export const feedbackRouter = router({
     .input(z.object({ pickId: z.number() }))
     .query(async ({ input }) => {
       const db = await getDb();
-      if (!db) return { feedback: [], stats: { avgRating: 0, totalFeedback: 0, positiveCount: 0 } };
+      if (!db) return { feedback: [], stats: { avgRating: 0, totalFeedback: 0, positiveCount: 0, negativeCount: 0, neutralCount: 0 } };
 
       const feedback = await db
         .select()

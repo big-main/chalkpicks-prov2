@@ -7,7 +7,6 @@ import { Check, Zap, Crown, Sparkles } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { useState } from "react";
-import { getLoginUrl } from "@/const";
 
 export default function PayPalPricing() {
   const { isAuthenticated, user } = useAuth();
@@ -17,7 +16,7 @@ export default function PayPalPricing() {
 
   const handleSubscribe = async (planId: string) => {
     if (!isAuthenticated) {
-      window.location.href = getLoginUrl();
+      window.location.href = "/login";
       return;
     }
 

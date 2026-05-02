@@ -5,7 +5,6 @@ import { Badge } from "@/components/ui/badge";
 import { AlertCircle, CheckCircle2, Calendar, CreditCard, Download } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { useLocation } from "wouter";
-import { getLoginUrl } from "@/const";
 
 export default function SubscriptionManagement() {
   const { user, isAuthenticated } = useAuth();
@@ -24,7 +23,7 @@ export default function SubscriptionManagement() {
           </CardHeader>
           <CardContent>
             <Button asChild className="w-full">
-              <a href={getLoginUrl()}>Sign In</a>
+              <a href="/login">Sign In</a>
             </Button>
           </CardContent>
         </Card>

@@ -1,5 +1,9 @@
-import { COOKIE_NAME } from "@shared/const";
+import { COOKIE_NAME, ONE_YEAR_MS } from "@shared/const";
+import bcrypt from "bcryptjs";
+import { TRPCError } from "@trpc/server";
+import { z } from "zod";
 import { getSessionCookieOptions } from "./_core/cookies";
+import { sdk } from "./_core/sdk";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router } from "./_core/trpc";
 import { picksRouter } from "./routers/picks";
@@ -12,11 +16,57 @@ import { notificationsRouter } from "./routers/notificationsRouter";
 import { feedbackRouter } from "./routers/feedback";
 import { paypalRouter } from "./routers/paypal";
 import { oddsRouter } from "./routers/odds";
+import * as db from "./db";
+import type { Response, Request } from "express";
+
+async function issueSessionCookie(req: Request, res: Response, userId: number, name: string) {
+  const sessionToken = await sdk.createSessionToken(userId, name, { expiresInMs: ONE_YEAR_MS });
+  const cookieOptions = getSessionCookieOptions(req);
+  res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+}
 
 export const appRouter = router({
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
+
+    register: publicProcedure
+      .input(z.object({
+        name: z.string().min(1).max(100),
+        email: z.string().email(),
+        password: z.string().min(8).max(128),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const existing = await db.getUserByEmail(input.email);
+        if (existing) {
+          throw new TRPCError({ code: "CONFLICT", message: "Email already registered" });
+        }
+
+        const passwordHash = await bcrypt.hash(input.password, 12);
+        const user = await db.createUser({ name: input.name, email: input.email, passwordHash });
+
+        await issueSessionCookie(ctx.req, ctx.res, user.id, user.name ?? input.name);
+
+        return user;
+      }),
+
+    login: publicProcedure
+      .input(z.object({
+        email: z.string().email(),
+        password: z.string(),
+      }))
+      .mutation(async ({ input, ctx }) => {
+        const user = await db.getUserByEmail(input.email);
+        const invalid = !user || !user.passwordHash || !(await bcrypt.compare(input.password, user.passwordHash));
+        if (invalid) {
+          throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid email or password" });
+        }
+
+        await issueSessionCookie(ctx.req, ctx.res, user!.id, user!.name ?? "");
+
+        return user;
+      }),
+
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
