@@ -10,7 +10,7 @@ const TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID || "";
 const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN || "";
 const TWILIO_PHONE_FROM = process.env.TWILIO_PHONE_FROM || "";
 const APP_NAME = "ChalkPicks Pro";
-const APP_URL = process.env.APP_URL || "https://chalkpicks-xui7hd5r.manus.space";
+const APP_URL = process.env.APP_URL || "https://www.chalkpicks.live";
 const FROM_EMAIL = process.env.FROM_EMAIL || "noreply@chalkpicks.ml";
 
 if (SENDGRID_API_KEY) {

@@ -26,16 +26,22 @@ export const betsRouter = router({
       if (input.result !== "all") conditions.push(eq(userBets.result, input.result));
       if (input.sportKey) conditions.push(eq(userBets.sportKey, input.sportKey));
 
-      const [betList, countResult] = await Promise.all([
+      const [betList, countResult, aggResult] = await Promise.all([
         db.select().from(userBets).where(and(...conditions)).orderBy(desc(userBets.createdAt)).limit(input.limit).offset(input.offset),
         db.select({ count: sql<number>`count(*)` }).from(userBets).where(and(...conditions)),
+        db.select({
+          wins: sql<number>`sum(case when result = 'win' then 1 else 0 end)`,
+          losses: sql<number>`sum(case when result = 'loss' then 1 else 0 end)`,
+          totalProfit: sql<number>`sum(cast(profit as decimal(10,2)))`,
+          totalStaked: sql<number>`sum(cast(stake as decimal(10,2)))`,
+        }).from(userBets).where(eq(userBets.userId, ctx.user.id)),
       ]);
 
-      const allBets = await db.select().from(userBets).where(eq(userBets.userId, ctx.user.id));
-      const wins = allBets.filter(b => b.result === "win").length;
-      const losses = allBets.filter(b => b.result === "loss").length;
-      const totalProfit = allBets.reduce((sum, b) => sum + Number(b.profit ?? 0), 0);
-      const totalStaked = allBets.reduce((sum, b) => sum + Number(b.stake), 0);
+      const agg = aggResult[0];
+      const wins = Number(agg?.wins ?? 0);
+      const losses = Number(agg?.losses ?? 0);
+      const totalProfit = Number(agg?.totalProfit ?? 0);
+      const totalStaked = Number(agg?.totalStaked ?? 0);
       const roi = totalStaked > 0 ? (totalProfit / totalStaked) * 100 : 0;
 
       return {

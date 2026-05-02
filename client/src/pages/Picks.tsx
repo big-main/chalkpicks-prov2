@@ -7,8 +7,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { Link } from "wouter";
-import { Brain, Lock, TrendingUp, Filter, RefreshCw, ChevronRight, Zap } from "lucide-react";
+import { Brain, Lock, TrendingUp, Filter, RefreshCw, ChevronRight, Zap, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 const PICK_TYPE_LABELS: Record<string, string> = {
@@ -106,11 +110,105 @@ function PickCard({ pick, isPremiumUser }: { pick: any; isPremiumUser: boolean }
   );
 }
 
+function GeneratePickDialog({ open, onClose, onGenerated, sports }: {
+  open: boolean;
+  onClose: () => void;
+  onGenerated: () => void;
+  sports: { key: string; name: string; icon: string }[];
+}) {
+  const [matchup, setMatchup] = useState("");
+  const [genSport, setGenSport] = useState("nfl");
+  const [context, setContext] = useState("");
+
+  const generateAI = trpc.picks.generateAI.useMutation({
+    onSuccess: () => {
+      toast.success("AI pick generated! Refreshing picks...");
+      setMatchup("");
+      setContext("");
+      onClose();
+      onGenerated();
+    },
+    onError: (err) => toast.error(err.message || "Generation failed"),
+  });
+
+  const handleSubmit = () => {
+    if (!matchup.trim()) {
+      toast.error("Please enter a matchup (e.g. Chiefs vs Raiders)");
+      return;
+    }
+    generateAI.mutate({ sportKey: genSport, matchup: matchup.trim(), context: context.trim() || undefined });
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
+      <DialogContent className="max-w-md">
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Brain className="w-5 h-5 text-primary" /> Generate AI Pick
+          </DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4 pt-1">
+          <div>
+            <Label className="text-sm mb-1.5 block">Sport</Label>
+            <Select value={genSport} onValueChange={setGenSport}>
+              <SelectTrigger className="h-9 text-sm">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {sports.map((s) => (
+                  <SelectItem key={s.key} value={s.key}>{s.icon} {s.name}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label className="text-sm mb-1.5 block">Matchup <span className="text-muted-foreground font-normal">(e.g. Chiefs vs Raiders)</span></Label>
+            <Input
+              value={matchup}
+              onChange={(e) => setMatchup(e.target.value)}
+              placeholder="Home Team vs Away Team"
+              className="h-9 text-sm"
+              onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+            />
+          </div>
+          <div>
+            <Label className="text-sm mb-1.5 block">Additional Context <span className="text-muted-foreground font-normal">(optional)</span></Label>
+            <Textarea
+              value={context}
+              onChange={(e) => setContext(e.target.value)}
+              placeholder="Injuries, weather, recent form..."
+              className="text-sm resize-none"
+              rows={2}
+            />
+          </div>
+          <div className="flex gap-2 pt-1">
+            <Button
+              className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90"
+              onClick={handleSubmit}
+              disabled={generateAI.isPending}
+            >
+              {generateAI.isPending ? (
+                <><RefreshCw className="w-3.5 h-3.5 mr-1.5 animate-spin" /> Generating...</>
+              ) : (
+                <><Sparkles className="w-3.5 h-3.5 mr-1.5" /> Generate Pick</>
+              )}
+            </Button>
+            <Button variant="outline" onClick={onClose} disabled={generateAI.isPending}>
+              Cancel
+            </Button>
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 export default function Picks() {
   const { isAuthenticated, user } = useAuth();
   const [sportKey, setSportKey] = useState<string>("all");
   const [tier, setTier] = useState<"all" | "free" | "premium">("all");
   const [page, setPage] = useState(1);
+  const [generateOpen, setGenerateOpen] = useState(false);
 
   const isPremiumUser = isAuthenticated && user?.subscriptionTier !== "free";
 
@@ -209,24 +307,35 @@ export default function Picks() {
 
           {/* AI Generate CTA */}
           {isPremiumUser && (
-            <Card className="bg-gradient-to-r from-primary/10 to-accent/10 border-primary/20 mb-6">
-              <CardContent className="p-4 flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
-                    <Brain className="w-4 h-4 text-primary" />
+            <>
+              <GeneratePickDialog
+                open={generateOpen}
+                onClose={() => setGenerateOpen(false)}
+                onGenerated={() => { setPage(1); refetch(); }}
+                sports={data?.sports ?? []}
+              />
+              <Card className="bg-gradient-to-r from-primary/10 to-accent/10 border-primary/20 mb-6">
+                <CardContent className="p-4 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 bg-primary/20 rounded-lg flex items-center justify-center">
+                      <Brain className="w-4 h-4 text-primary" />
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-foreground">Generate Custom AI Pick</div>
+                      <div className="text-xs text-muted-foreground">Enter any matchup and get an instant AI analysis</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="text-sm font-semibold text-foreground">Generate Custom AI Pick</div>
-                    <div className="text-xs text-muted-foreground">Enter any matchup and get an instant AI analysis</div>
-                  </div>
-                </div>
-                <Link href="/picks/generate">
-                  <Button size="sm" variant="outline" className="border-primary/30 text-primary hover:bg-primary/10">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="border-primary/30 text-primary hover:bg-primary/10"
+                    onClick={() => setGenerateOpen(true)}
+                  >
                     Generate <ChevronRight className="w-3.5 h-3.5 ml-1" />
                   </Button>
-                </Link>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </>
           )}
 
           {/* Picks grid */}

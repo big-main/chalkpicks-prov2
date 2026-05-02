@@ -121,7 +121,7 @@ export default function Leaderboard() {
                 const bgColors = ["bg-gray-400/10", "bg-yellow-400/10", "bg-amber-600/10"];
                 const borderColors = ["border-gray-400/30", "border-yellow-400/30", "border-amber-600/30"];
                 return (
-                  <Card key={entry.rank} className={`${bgColors[podiumIndex]} ${borderColors[podiumIndex]} border`}>
+                  <Card key={entry.id ?? entry.userId ?? podiumIndex} className={`${bgColors[podiumIndex]} ${borderColors[podiumIndex]} border`}>
                     <CardContent className={`p-4 flex flex-col items-center justify-end ${heights[podiumIndex]}`}>
                       <div className={`font-display text-2xl ${colors[podiumIndex]} mb-1`}>#{actualRank}</div>
                       <div className="font-semibold text-foreground text-sm text-center truncate w-full text-center">{entry.displayName}</div>
@@ -163,7 +163,7 @@ export default function Leaderboard() {
                     </thead>
                     <tbody>
                       {entries?.map((entry: any) => (
-                        <tr key={entry.rank} className="border-b border-border/30 hover:bg-secondary/30 transition-colors">
+                        <tr key={entry.id ?? entry.userId} className="border-b border-border/30 hover:bg-secondary/30 transition-colors">
                           <td className="p-3">
                             <div className={`font-display text-base ${
                               entry.rank === 1 ? "text-yellow-400" :

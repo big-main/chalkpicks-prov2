@@ -62,6 +62,10 @@ export default function Backtesting() {
   const { mutateAsync: runBacktestMutation } = trpc.backtest.run.useMutation();
 
   const runBacktest = async () => {
+    if (dateFrom >= dateTo) {
+      toast.error("'Date From' must be before 'Date To'");
+      return;
+    }
     try {
       const result = await runBacktestMutation({
         name: `${sport} ${pickType} Backtest`,

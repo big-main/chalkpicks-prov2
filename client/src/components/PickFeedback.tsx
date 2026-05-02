@@ -79,7 +79,7 @@ export default function PickFeedback({ pickId, isAuthenticated }: PickFeedbackPr
             </div>
             <div className="text-right text-xs">
               <div className="text-green-400">{stats.positiveCount} positive</div>
-              <div className="text-red-400">{(stats as any).negativeCount || 0} negative</div>
+              <div className="text-red-400">{stats.negativeCount} negative</div>
             </div>
           </div>
         </Card>

@@ -230,7 +230,12 @@ Be specific, data-driven, and concise. Confidence score should be 60-95 based on
       const content = typeof rawContent === "string" ? rawContent : null;
       if (!content) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "AI generation failed" });
 
-      const parsed = JSON.parse(content);
+      let parsed: any;
+      try {
+        parsed = JSON.parse(content);
+      } catch {
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "AI response parsing failed — invalid JSON returned" });
+      }
       const [homeTeam, awayTeam] = input.matchup.split(" vs ").map(s => s.trim());
 
       const db = await getDb();

@@ -188,28 +188,27 @@ export const feedbackRouter = router({
       const db = await getDb();
       if (!db) return [];
 
-      // Get all picks with their feedback
-      const allPicks = await db.select().from(picks);
+      const [allPicks, allFeedback] = await Promise.all([
+        db.select().from(picks),
+        db.select().from(pickFeedback),
+      ]);
 
-      // Calculate average rating for each pick
-      const picksWithRatings = await Promise.all(
-        allPicks.map(async (pick) => {
-          const feedback = await db
-            .select()
-            .from(pickFeedback)
-            .where(eq(pickFeedback.pickId, pick.id));
+      const feedbackByPickId = new Map<number, typeof allFeedback>();
+      for (const fb of allFeedback) {
+        const arr = feedbackByPickId.get(fb.pickId) ?? [];
+        arr.push(fb);
+        feedbackByPickId.set(fb.pickId, arr);
+      }
 
+      return allPicks
+        .map((pick) => {
+          const feedback = feedbackByPickId.get(pick.id) ?? [];
           if (feedback.length < input.minFeedback) return null;
-
           const avgRating = feedback.reduce((sum, f) => sum + f.rating, 0) / feedback.length;
           return { ...pick, avgRating, feedbackCount: feedback.length };
         })
-      );
-
-      // Filter and sort
-      return picksWithRatings
-        .filter((p) => p !== null)
-        .sort((a, b) => (b?.avgRating || 0) - (a?.avgRating || 0))
+        .filter((p): p is NonNullable<typeof p> => p !== null)
+        .sort((a, b) => b.avgRating - a.avgRating)
         .slice(0, input.limit);
     }),
 
@@ -222,25 +221,27 @@ export const feedbackRouter = router({
       const db = await getDb();
       if (!db) return [];
 
-      const allPicks = await db.select().from(picks);
+      const [allPicks, allFeedback] = await Promise.all([
+        db.select().from(picks),
+        db.select().from(pickFeedback),
+      ]);
 
-      const picksWithRatings = await Promise.all(
-        allPicks.map(async (pick) => {
-          const feedback = await db
-            .select()
-            .from(pickFeedback)
-            .where(eq(pickFeedback.pickId, pick.id));
+      const feedbackByPickId = new Map<number, typeof allFeedback>();
+      for (const fb of allFeedback) {
+        const arr = feedbackByPickId.get(fb.pickId) ?? [];
+        arr.push(fb);
+        feedbackByPickId.set(fb.pickId, arr);
+      }
 
+      return allPicks
+        .map((pick) => {
+          const feedback = feedbackByPickId.get(pick.id) ?? [];
           if (feedback.length < input.minFeedback) return null;
-
           const avgRating = feedback.reduce((sum, f) => sum + f.rating, 0) / feedback.length;
           return { ...pick, avgRating, feedbackCount: feedback.length };
         })
-      );
-
-      return picksWithRatings
-        .filter((p) => p !== null)
-        .sort((a, b) => (a?.avgRating || 0) - (b?.avgRating || 0))
+        .filter((p): p is NonNullable<typeof p> => p !== null)
+        .sort((a, b) => a.avgRating - b.avgRating)
         .slice(0, input.limit);
     }),
 

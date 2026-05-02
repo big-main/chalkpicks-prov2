@@ -2,29 +2,6 @@ import { protectedProcedure, publicProcedure, router, premiumProcedure } from ".
 import { z } from "zod/v4";
 
 // Mock live sports data — in production, integrate with The Odds API, ESPN API, etc.
-function generateLiveGames(sportKey: string) {
-  const gamesBySport: Record<string, any[]> = {
-    nfl: [
-      { id: 1, homeTeam: "Kansas City Chiefs", awayTeam: "Las Vegas Raiders", homeScore: 21, awayScore: 14, status: "live", quarter: "3rd", timeLeft: "8:42", homeMoneyline: -280, awayMoneyline: 230, spread: -7.5, overUnder: 47.5, venue: "Arrowhead Stadium" },
-      { id: 2, homeTeam: "Philadelphia Eagles", awayTeam: "Dallas Cowboys", homeScore: 0, awayScore: 0, status: "scheduled", gameTime: "8:20 PM ET", homeMoneyline: -165, awayMoneyline: 140, spread: -3.5, overUnder: 44.5, venue: "Lincoln Financial Field" },
-      { id: 3, homeTeam: "San Francisco 49ers", awayTeam: "Seattle Seahawks", homeScore: 28, awayScore: 17, status: "final", homeMoneyline: -220, awayMoneyline: 185, spread: -6.5, overUnder: 46.0, venue: "Levi's Stadium" },
-    ],
-    nba: [
-      { id: 4, homeTeam: "Boston Celtics", awayTeam: "Golden State Warriors", homeScore: 67, awayScore: 61, status: "live", quarter: "3rd", timeLeft: "4:12", homeMoneyline: -185, awayMoneyline: 155, spread: -4.5, overUnder: 224.5, venue: "TD Garden" },
-      { id: 5, homeTeam: "Denver Nuggets", awayTeam: "Phoenix Suns", homeScore: 0, awayScore: 0, status: "scheduled", gameTime: "9:00 PM ET", homeMoneyline: -145, awayMoneyline: 122, spread: -3.0, overUnder: 228.5, venue: "Ball Arena" },
-      { id: 6, homeTeam: "Los Angeles Lakers", awayTeam: "Miami Heat", homeScore: 112, awayScore: 98, status: "final", homeMoneyline: -175, awayMoneyline: 148, spread: -4.5, overUnder: 218.0, venue: "Crypto.com Arena" },
-    ],
-    mlb: [
-      { id: 7, homeTeam: "Los Angeles Dodgers", awayTeam: "San Francisco Giants", homeScore: 4, awayScore: 2, status: "live", inning: "7th", homeMoneyline: -175, awayMoneyline: 148, overUnder: 8.5, venue: "Dodger Stadium" },
-      { id: 8, homeTeam: "New York Yankees", awayTeam: "Boston Red Sox", homeScore: 0, awayScore: 0, status: "scheduled", gameTime: "7:05 PM ET", homeMoneyline: -155, awayMoneyline: 132, overUnder: 9.0, venue: "Yankee Stadium" },
-    ],
-    nhl: [
-      { id: 9, homeTeam: "Colorado Avalanche", awayTeam: "Minnesota Wild", homeScore: 3, awayScore: 1, status: "live", period: "2nd", timeLeft: "11:23", homeMoneyline: -195, awayMoneyline: 162, spread: -1.5, overUnder: 6.5, venue: "Ball Arena" },
-    ],
-  };
-  return gamesBySort[sportKey] ?? gamesBySort.nfl ?? [];
-}
-
 const gamesBySort: Record<string, any[]> = {
   nfl: [
     { id: 1, homeTeam: "Kansas City Chiefs", awayTeam: "Las Vegas Raiders", homeScore: 21, awayScore: 14, status: "live", quarter: "3rd", timeLeft: "8:42", homeMoneyline: -280, awayMoneyline: 230, spread: -7.5, overUnder: 47.5, venue: "Arrowhead Stadium" },
