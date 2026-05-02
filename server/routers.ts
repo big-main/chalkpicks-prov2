@@ -17,6 +17,13 @@ import { feedbackRouter } from "./routers/feedback";
 import { paypalRouter } from "./routers/paypal";
 import { oddsRouter } from "./routers/odds";
 import * as db from "./db";
+import type { Response, Request } from "express";
+
+async function issueSessionCookie(req: Request, res: Response, userId: number, name: string) {
+  const sessionToken = await sdk.createSessionToken(userId, name, { expiresInMs: ONE_YEAR_MS });
+  const cookieOptions = getSessionCookieOptions(req);
+  res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+}
 
 export const appRouter = router({
   system: systemRouter,
@@ -38,9 +45,7 @@ export const appRouter = router({
         const passwordHash = await bcrypt.hash(input.password, 12);
         const user = await db.createUser({ name: input.name, email: input.email, passwordHash });
 
-        const sessionToken = await sdk.createSessionToken(user.id, user.name ?? input.name, { expiresInMs: ONE_YEAR_MS });
-        const cookieOptions = getSessionCookieOptions(ctx.req);
-        ctx.res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+        await issueSessionCookie(ctx.req, ctx.res, user.id, user.name ?? input.name);
 
         return user;
       }),
@@ -57,9 +62,7 @@ export const appRouter = router({
           throw new TRPCError({ code: "UNAUTHORIZED", message: "Invalid email or password" });
         }
 
-        const sessionToken = await sdk.createSessionToken(user!.id, user!.name ?? "", { expiresInMs: ONE_YEAR_MS });
-        const cookieOptions = getSessionCookieOptions(ctx.req);
-        ctx.res.cookie(COOKIE_NAME, sessionToken, { ...cookieOptions, maxAge: ONE_YEAR_MS });
+        await issueSessionCookie(ctx.req, ctx.res, user!.id, user!.name ?? "");
 
         return user;
       }),
