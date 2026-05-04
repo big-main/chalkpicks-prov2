@@ -14,7 +14,7 @@ jobs:
       contents: read
     steps:
       - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.2.2
+        uses: appleboy/ssh-action@2ead5e36573f08b82fbfce1504f1a4b05a647c6f # v1.2.2
         with:
           host: ${{ secrets.ORACLE_HOST }}
           username: ubuntu
