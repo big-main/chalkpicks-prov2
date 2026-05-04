@@ -169,3 +169,11 @@
 - [x] Wire authentication flow in Navbar (Sign In, Sign Up buttons)
 - [x] Add Account Settings link to user dropdown menu
 - [x] Logout functionality already in Navbar
+
+
+## Content Blur for Free Users (NEW)
+- [x] Update Picks page to blur premium content (confidence, edge, odds, analysis) for free users
+- [x] Show only pick title for free users
+- [x] Add "Upgrade to see full analysis" CTA on blurred content
+- [x] Premium users see all content unblurred
+- [x] Test blur effect and verify messaging
