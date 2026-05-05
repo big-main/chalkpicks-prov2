@@ -177,3 +177,12 @@
 - [x] Add "Upgrade to see full analysis" CTA on blurred content
 - [x] Premium users see all content unblurred
 - [x] Test blur effect and verify messaging
+
+
+## OpenAI & Claude API Integration (NEW)
+- [x] Get OpenAI API key and configure in environment
+- [x] Get Anthropic Claude API key and configure in environment
+- [x] Create AI service layer with OpenAI and Claude clients
+- [x] Wire AI services into pick generation (use Claude for analysis, OpenAI for summaries)
+- [x] Add AI-powered betting insights and recommendations
+- [x] Test both APIs end-to-end (77/77 tests passing)
