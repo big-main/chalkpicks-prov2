@@ -176,17 +176,17 @@ export default function AccountSettings() {
                   <Alert style={{ background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.3)" }}>
                     <CheckCircle className="h-4 w-4" style={{ color: "#22c55e" }} />
                     <AlertDescription style={{ color: "#86efac" }}>
-                      Your account is protected by Manus OAuth with enterprise-grade security
+                      Your account is protected with secure authentication
                     </AlertDescription>
                   </Alert>
 
                   <div>
                     <h3 style={{ color: "#e8e8f0", fontWeight: 600, marginBottom: "0.5rem" }}>Login Method</h3>
                     <p style={{ color: "#a8a8b0", fontSize: "0.875rem", marginBottom: "1rem" }}>
-                      You're currently using Manus OAuth for secure login
+                      You're currently using email &amp; password authentication
                     </p>
                     <div style={{ padding: "1rem", background: "rgba(0,212,255,0.05)", border: "1px solid rgba(0,212,255,0.2)", borderRadius: "6px", color: "#00d4ff", fontSize: "0.875rem" }}>
-                      ✓ OAuth2 with Manus (Recommended)
+                      ✓ Email &amp; Password Authentication
                     </div>
                   </div>
 
