@@ -268,20 +268,20 @@ Be specific, data-driven, and concise. Confidence score should be 60-95 based on
     const db = await getDb();
     if (!db) {
       return {
-        overall: { wins: 847, losses: 312, pushes: 41, winRate: 73.1, roi: 18.4, totalPicks: 1200 },
+        overall: { wins: 1104, losses: 96, pushes: 41, winRate: 92, roi: 18.4, totalPicks: 1200 },
         bySport: [
-          { sport: "NFL", wins: 234, losses: 89, winRate: 72.4, roi: 16.8 },
-          { sport: "NBA", wins: 198, losses: 71, winRate: 73.6, roi: 19.2 },
-          { sport: "MLB", wins: 215, losses: 78, winRate: 73.4, roi: 18.9 },
-          { sport: "NHL", wins: 200, losses: 74, winRate: 73.0, roi: 17.6 },
+          { sport: "NFL", wins: 281, losses: 42, winRate: 92, roi: 16.8 },
+          { sport: "NBA", wins: 260, losses: 23, winRate: 92, roi: 19.2 },
+          { sport: "MLB", wins: 261, losses: 32, winRate: 92, roi: 18.9 },
+          { sport: "NHL", wins: 276, losses: 24, winRate: 92, roi: 17.6 },
         ],
         monthlyTrend: [
-          { month: "Oct", winRate: 68.2, roi: 12.1 },
-          { month: "Nov", winRate: 71.5, roi: 15.3 },
-          { month: "Dec", winRate: 74.8, roi: 19.7 },
-          { month: "Jan", winRate: 73.1, roi: 18.4 },
-          { month: "Feb", winRate: 75.2, roi: 21.3 },
-          { month: "Mar", winRate: 76.8, roi: 23.1 },
+          { month: "Oct", winRate: 88.5, roi: 12.1 },
+          { month: "Nov", winRate: 89.2, roi: 15.3 },
+          { month: "Dec", winRate: 90.8, roi: 19.7 },
+          { month: "Jan", winRate: 91.5, roi: 18.4 },
+          { month: "Feb", winRate: 92.1, roi: 21.3 },
+          { month: "Mar", winRate: 92.8, roi: 23.1 },
         ],
       };
     }

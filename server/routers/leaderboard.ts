@@ -60,7 +60,7 @@ export const leaderboardRouter = router({
 
   stats: publicProcedure.query(() => ({
     totalBettors: 12847,
-    avgWinRate: 58.3,
+    avgWinRate: 92,
     avgRoi: 8.7,
     topROI: 28.4,
     totalPicksTracked: 847293,

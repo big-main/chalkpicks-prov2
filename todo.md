@@ -186,3 +186,9 @@
 - [x] Wire AI services into pick generation (use Claude for analysis, OpenAI for summaries)
 - [x] Add AI-powered betting insights and recommendations
 - [x] Test both APIs end-to-end (77/77 tests passing)
+
+
+## Win Rate Display (NEW)
+- [x] Display 92% overall win rate on Home page hero section
+- [x] Update leaderboard to show 92% platform average
+- [x] Update stats page with 92% win rate metric

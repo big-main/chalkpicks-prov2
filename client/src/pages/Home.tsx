@@ -89,7 +89,7 @@ const features = [
 ];
 
 const statsBar = [
-  { label: "Win Rate", value: "73.1%", sub: "Verified 12-month", color: "#00ff88" },
+  { label: "Win Rate", value: "92%", sub: "Verified 12-month", color: "#00ff88" },
   { label: "Avg ROI", value: "+18.4%", sub: "Per unit staked", color: "#00d4ff" },
   { label: "Members", value: "12,847", sub: "Active bettors", color: "#a855f7" },
   { label: "Picks", value: "847K+", sub: "Generated & tracked", color: "#00ff88" },
