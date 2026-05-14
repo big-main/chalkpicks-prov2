@@ -49,7 +49,6 @@
     "@trpc/client": "^11.6.0",
     "@trpc/react-query": "^11.6.0",
     "@trpc/server": "^11.6.0",
-    "anthropic": "^0.0.0",
     "axios": "^1.15.0",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",

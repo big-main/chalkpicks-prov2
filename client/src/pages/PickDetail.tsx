@@ -192,7 +192,7 @@ export default function PickDetail() {
               <CardContent className="p-5 text-center">
                 <TrendingUp className="w-8 h-8 text-primary mx-auto mb-2" />
                 <p className="text-sm text-muted-foreground mb-3">Sign in to track this bet and access your personal dashboard</p>
-                <Button className="bg-primary text-primary-foreground" onClick={() => (window.location.href = "/api/oauth/login")}>
+                <Button className="bg-primary text-primary-foreground" onClick={() => (window.location.href = "/login")}>
                   Sign In to Track
                 </Button>
               </CardContent>

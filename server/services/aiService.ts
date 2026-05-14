@@ -34,7 +34,7 @@ export async function generatePickAnalysis(
 ): Promise<PickAnalysisOutput> {
   // Use Claude for detailed analysis
   const claudeResponse = await anthropic.messages.create({
-    model: "claude-3-opus-20240229",
+    model: "claude-sonnet-4-6",
     max_tokens: 1024,
     messages: [
       {
