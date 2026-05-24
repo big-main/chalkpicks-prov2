@@ -44,12 +44,40 @@ export const subscriptionRouter = router({
     .input(z.object({
       tier: z.enum(["daily", "monthly", "yearly"]),
       origin: z.string(),
+      promoCode: z.string().optional(),
     }))
     .mutation(async ({ input, ctx }) => {
       const plan = PLANS[input.tier];
       if (!plan) throw new TRPCError({ code: "BAD_REQUEST" });
 
       const isRecurring = input.tier !== "daily";
+      let finalAmount = plan.amountCents;
+      let promoCodeId: string = "";
+
+      // Validate and apply promo code if provided
+      if (input.promoCode) {
+        const { validatePromoCode, getPromoCodeByCode } = await import("../db");
+        const validation = await validatePromoCode(input.promoCode, input.tier);
+        
+        if (!validation.valid) {
+          throw new TRPCError({
+            code: "BAD_REQUEST",
+            message: validation.message || "Invalid promo code",
+          });
+        }
+
+        const promo = await getPromoCodeByCode(input.promoCode);
+        if (promo) {
+          promoCodeId = promo.id.toString();
+          let discount = 0;
+          if (validation.discountType === "percentage") {
+            discount = Math.round((plan.amountCents * validation.discount!) / 100);
+          } else {
+            discount = Math.round(validation.discount! * 100);
+          }
+          finalAmount = Math.max(0, plan.amountCents - discount);
+        }
+      }
 
       try {
         const session = await stripe.checkout.sessions.create({
@@ -61,7 +89,7 @@ export const subscriptionRouter = router({
             {
               price_data: {
                 currency: "usd",
-                unit_amount: plan.amountCents,
+                unit_amount: finalAmount,
                 product_data: {
                   name: `ChalkPicks Pro — ${plan.name}`,
                   description: plan.description,
@@ -77,6 +105,7 @@ export const subscriptionRouter = router({
             customer_email: ctx.user.email ?? "",
             customer_name: ctx.user.name ?? "",
             tier: input.tier,
+            promoCodeId: promoCodeId,
           },
           success_url: `${input.origin}/payment/success?tier=${input.tier}&session_id={CHECKOUT_SESSION_ID}`,
           cancel_url: `${input.origin}/pricing`,

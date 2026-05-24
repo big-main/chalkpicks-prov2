@@ -337,3 +337,37 @@ export const notificationLogs = mysqlTable("notification_logs", {
 
 export type NotificationLog = typeof notificationLogs.$inferSelect;
 export type InsertNotificationLog = typeof notificationLogs.$inferInsert;
+
+// ─── Promo Codes ──────────────────────────────────────────────────────────────
+export const promoCodes = mysqlTable("promo_codes", {
+  id: int("id").autoincrement().primaryKey(),
+  code: varchar("code", { length: 32 }).unique().notNull(),
+  discountType: mysqlEnum("discountType", ["percentage", "fixed"]).notNull(),
+  discountValue: decimal("discountValue", { precision: 5, scale: 2 }).notNull(),
+  tier: mysqlEnum("tier", ["daily", "monthly", "yearly"]).notNull(),
+  maxUses: int("maxUses"),
+  currentUses: int("currentUses").default(0).notNull(),
+  expiresAt: timestamp("expiresAt"),
+  source: varchar("source", { length: 64 }), // "twitter", "email", "reddit", "affiliate", "launch"
+  isActive: boolean("isActive").default(true).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
+export type PromoCode = typeof promoCodes.$inferSelect;
+export type InsertPromoCode = typeof promoCodes.$inferInsert;
+
+// ─── Promo Code Usage Tracking ────────────────────────────────────────────────
+export const promoCodeUsage = mysqlTable("promo_code_usage", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId").notNull(),
+  codeId: int("codeId").notNull(),
+  originalPrice: decimal("originalPrice", { precision: 10, scale: 2 }).notNull(),
+  discountAmount: decimal("discountAmount", { precision: 10, scale: 2 }).notNull(),
+  finalPrice: decimal("finalPrice", { precision: 10, scale: 2 }).notNull(),
+  stripeSessionId: varchar("stripeSessionId", { length: 128 }),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+});
+
+export type PromoCodeUsage = typeof promoCodeUsage.$inferSelect;
+export type InsertPromoCodeUsage = typeof promoCodeUsage.$inferInsert;

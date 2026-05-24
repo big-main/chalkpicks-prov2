@@ -75,9 +75,17 @@ export default function Pricing() {
   const { isAuthenticated } = useAuth();
   const [loading, setLoading] = useState<string | null>(null);
   const [showComparison, setShowComparison] = useState(false);
+  const [promoCode, setPromoCode] = useState("");
+  const [selectedTier, setSelectedTier] = useState<"daily" | "monthly" | "yearly">("monthly");
+  const [discount, setDiscount] = useState(0);
+  const [finalPrice, setFinalPrice] = useState(0);
 
   const { data: plansData } = trpc.subscription.plans.useQuery();
   const createCheckout = trpc.subscription.createCheckout.useMutation();
+  const validatePromo = trpc.promoCode.validate.useQuery(
+    { code: promoCode, tier: selectedTier },
+    { enabled: promoCode.length > 0 }
+  );
   const { data: mySubscription } = trpc.subscription.mySubscription.useQuery(undefined, {
     enabled: isAuthenticated,
   });
