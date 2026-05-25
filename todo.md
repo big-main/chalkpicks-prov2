@@ -209,3 +209,15 @@
 - [ ] Wire real-time data into picks engine
 - [x] Test real-time updates end-to-end
 - [ ] Deploy and verify live data flow
+
+
+## Firecrawl Web Scraping Integration (NEW)
+- [x] Create Firecrawl service for web scraping
+- [x] Create tRPC router for scraping endpoints
+- [x] Add Firecrawl API key to environment
+- [x] Create Firecrawl integration tests (4/4 passing)
+- [x] Create WebScraper frontend component
+- [x] Add route to scraper page (/web-scraper)
+- [ ] Integrate scraped data into picks engine
+- [ ] Add scheduled scraping jobs for sports news
+- [ ] Create data pipeline for odds extraction

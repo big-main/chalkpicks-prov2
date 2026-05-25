@@ -19,6 +19,7 @@ import { oddsRouter } from "./routers/odds";
 import { aiPicksRouter } from "./routers/aiPicks";
 import { promoCodeRouter } from "./routers/promoCode";
 import { newsRouter } from "./routers/news";
+import { firecrawlRouter } from "./routers/firecrawl";
 import * as db from "./db";
 import type { User } from "../drizzle/schema";
 import type { Response, Request } from "express";
@@ -95,6 +96,7 @@ export const appRouter = router({
   aiPicks: aiPicksRouter,
   promoCode: promoCodeRouter,
   news: newsRouter,
+  firecrawl: firecrawlRouter,
 });
 
 export type AppRouter = typeof appRouter;
