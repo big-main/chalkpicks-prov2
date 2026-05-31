@@ -3,8 +3,18 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import Navbar from "@/components/Navbar";
 import { PromoCodeInput } from "@/components/PromoCodeInput";
 import { trpc } from "@/lib/trpc";
-import { toast } from "sonner";
-import { Check, Zap, Crown, Star, Shield, ArrowRight, Lock } from "lucide-react";
+import { Check, Zap, Crown, Star, Shield, Lock } from "lucide-react";
+
+// ─── Stripe Buy Button IDs ────────────────────────────────────────────────────
+
+const STRIPE_PUBLISHABLE_KEY =
+  "pk_live_51TItryCh8PmnytAkl7VzrHZzeTY4hN6cLIgNDBmkAmVzSSWsNz11BYncw3TcoQ3qkuMiaL0UYuwOllBKFj8FEsA2008oOPdpZP";
+
+const STRIPE_BUY_BUTTONS: Record<"daily" | "monthly" | "yearly", string> = {
+  daily:   "buy_btn_1TdC9ZCh8PmnytAkQQS6Adhl",
+  monthly: "buy_btn_1TdBUWCh8PmnytAkD1uc7th4",
+  yearly:  "buy_btn_1TdCCaCh8PmnytAkc9N4q4mw",
+};
 
 // ─── Plan meta ────────────────────────────────────────────────────────────────
 
@@ -70,11 +80,26 @@ function CheckMark({ value, color }: { value: boolean; color: string }) {
     : <div className="flex justify-center"><span style={{ color: "rgba(100,100,130,0.4)", fontSize: "1rem" }}>—</span></div>;
 }
 
+// ─── Stripe Buy Button web component (typed for TSX) ─────────────────────────
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      "stripe-buy-button": React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement> & {
+          "buy-button-id": string;
+          "publishable-key": string;
+        },
+        HTMLElement
+      >;
+    }
+  }
+}
+
 // ─── Main page ────────────────────────────────────────────────────────────────
 
 export default function Pricing() {
   const { isAuthenticated } = useAuth();
-  const [loading, setLoading] = useState<string | null>(null);
   const [showComparison, setShowComparison] = useState(false);
   const [promoCode, setPromoCode] = useState("");
   const [selectedTier, setSelectedTier] = useState<"daily" | "monthly" | "yearly">("monthly");
@@ -82,11 +107,6 @@ export default function Pricing() {
   const [finalPrice, setFinalPrice] = useState(0);
 
   const { data: plansData } = trpc.subscription.plans.useQuery();
-  const createCheckout = trpc.subscription.createCheckout.useMutation();
-  const validatePromo = trpc.promoCode.validate.useQuery(
-    { code: promoCode, tier: selectedTier },
-    { enabled: promoCode.length > 0 }
-  );
   const { data: mySubscription } = trpc.subscription.mySubscription.useQuery(undefined, {
     enabled: isAuthenticated,
   });
@@ -104,34 +124,14 @@ export default function Pricing() {
     return { key, ...defaults[key] };
   });
 
-  const handleSubscribe = async (tier: string) => {
-    if (!isAuthenticated) {
-      window.location.href = "/login";
-      return;
-    }
-    setLoading(tier);
-    try {
-      const result = await createCheckout.mutateAsync({
-        tier: tier as "daily" | "monthly" | "yearly",
-        origin: window.location.origin,
-        promoCode: promoCode || undefined,
-      });
-      if (result.url) {
-        toast.success("Redirecting to secure Stripe checkout...");
-        window.open(result.url, "_blank");
-      }
-    } catch (err: any) {
-      toast.error(err?.message ?? "Failed to start checkout. Please try again.");
-    } finally {
-      setLoading(null);
-    }
-  };
-
   const currentTier = mySubscription?.tier ?? "free";
   const isActive = mySubscription?.isActive ?? false;
 
   return (
     <div className="min-h-screen" style={{ background: "#080814", color: "#e8e8f0" }}>
+      {/* Load Stripe Buy Button script */}
+      <script async src="https://js.stripe.com/v3/buy-button.js" />
+
       <Navbar />
 
       {/* Background grid */}
@@ -211,6 +211,7 @@ export default function Pricing() {
             const isCurrent = isActive && currentTier === plan.key;
             const price = plan.amountCents / 100;
             const isPopular = meta.popular;
+            const buyButtonId = STRIPE_BUY_BUTTONS[plan.key];
 
             return (
               <div key={plan.key} className="relative flex flex-col" style={{ transform: isPopular ? "scale(1.03)" : "scale(1)" }}>
@@ -272,7 +273,7 @@ export default function Pricing() {
                     ))}
                   </ul>
 
-                  {/* CTA */}
+                  {/* CTA — Stripe Buy Button or locked state */}
                   {isCurrent ? (
                     <div
                       className="w-full py-3 text-center text-sm font-bold tracking-wider"
@@ -280,30 +281,28 @@ export default function Pricing() {
                     >
                       ✓ CURRENT PLAN
                     </div>
-                  ) : (
+                  ) : !isAuthenticated ? (
                     <button
-                      onClick={() => handleSubscribe(plan.key)}
-                      disabled={loading === plan.key}
+                      onClick={() => { window.location.href = "/login"; }}
                       className="w-full py-3 text-sm font-bold tracking-wider flex items-center justify-center gap-2 transition-all"
                       style={{
-                        background: isPopular ? "#00ff88" : `${meta.color}18`,
-                        color: isPopular ? "#080814" : meta.color,
-                        border: `1px solid ${isPopular ? "#00ff88" : `${meta.color}50`}`,
+                        background: `${meta.color}18`,
+                        color: meta.color,
+                        border: `1px solid ${meta.color}50`,
                         borderRadius: "5px",
-                        cursor: loading === plan.key ? "not-allowed" : "pointer",
-                        opacity: loading === plan.key ? 0.7 : 1,
+                        cursor: "pointer",
                         fontFamily: "'Exo 2', sans-serif",
-                        boxShadow: isPopular ? "0 0 20px rgba(0,255,136,0.3)" : "none",
                       }}
                     >
-                      {loading === plan.key ? (
-                        <><span className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" /> REDIRECTING...</>
-                      ) : !isAuthenticated ? (
-                        <><Lock className="w-4 h-4" /> SIGN IN TO SUBSCRIBE</>
-                      ) : (
-                        <>GET STARTED <ArrowRight className="w-4 h-4" /></>
-                      )}
+                      <Lock className="w-4 h-4" /> SIGN IN TO SUBSCRIBE
                     </button>
+                  ) : (
+                    <div className="w-full">
+                      <stripe-buy-button
+                        buy-button-id={buyButtonId}
+                        publishable-key={STRIPE_PUBLISHABLE_KEY}
+                      />
+                    </div>
                   )}
                 </NeonCard>
               </div>
@@ -380,7 +379,7 @@ export default function Pricing() {
               Not satisfied? Contact us within 48 hours of your first purchase and we'll issue a full refund — no questions asked.
             </p>
             <div className="mt-4 text-xs" style={{ color: "rgba(140,140,170,0.5)" }}>
-              Payments processed securely by Stripe · Test card: <code style={{ background: "rgba(255,255,255,0.08)", padding: "1px 6px", borderRadius: "3px" }}>4242 4242 4242 4242</code>
+              Payments processed securely by Stripe
             </div>
           </NeonCard>
         </div>
