@@ -2,7 +2,7 @@ import { useState } from "react";
 import Navbar from "@/components/Navbar";
 import { trpc } from "@/lib/trpc";
 import { Paywall } from "@/components/Paywall";
-import { Calculator, Layers, CloudLightning, TrendingUp, RefreshCw, Info, Zap, Eye, Play, Video } from "lucide-react";
+import { Calculator, Layers, CloudLightning, TrendingUp, RefreshCw, Info, Zap, Eye } from "lucide-react";
 
 const NeonCard = ({ children, className = "", style = {} }: { children: React.ReactNode; className?: string; style?: React.CSSProperties }) => (
   <div
@@ -567,107 +567,12 @@ function PublicBetting() {
   );
 }
 
-// ─── Manim Animator Tool ──────────────────────────────────────────────────────
-function ManimAnimatorTool() {
-  const [type, setType] = useState<"riemann" | "fourier" | "surface">("riemann");
-  const [title, setTitle] = useState("");
-  const [videoUrl, setVideoUrl] = useState("");
-
-  const generate = trpc.animator.generateAnimation.useMutation({
-    onSuccess: (data) => {
-      if (data.success && data.url) {
-        setVideoUrl(data.url);
-      }
-    },
-  });
-
-  return (
-    <div className="grid lg:grid-cols-2 gap-6">
-      <NeonCard className="p-6">
-        <h3 style={{ fontFamily: "'Rajdhani', sans-serif", fontWeight: 700, fontSize: "1.2rem", textTransform: "uppercase", color: "white", marginBottom: "1.5rem" }}>
-          ANIMATION CONFIG
-        </h3>
-        <div className="space-y-5">
-          <div>
-            <label className="block text-xs font-bold tracking-wider mb-2" style={{ color: "#00d4ff" }}>VISUALIZATION TYPE</label>
-            <select
-              value={type}
-              onChange={(e) => setType(e.target.value as any)}
-              className="w-full px-3 py-2.5 text-sm font-medium"
-              style={{ background: "rgba(0,0,0,0.4)", border: "1px solid rgba(168,85,247,0.2)", borderRadius: "4px", color: "white", outline: "none" }}
-            >
-              <option value="riemann">Riemann Sums (Integration)</option>
-              <option value="fourier">Fourier Series (Signal Processing)</option>
-              <option value="surface">3D Surface (Geometry)</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-xs font-bold tracking-wider mb-2" style={{ color: "#00d4ff" }}>CUSTOM TITLE (OPTIONAL)</label>
-            <input
-              type="text"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter animation title..."
-              className="w-full px-3 py-2.5 text-sm font-medium"
-              style={{ background: "rgba(0,0,0,0.4)", border: "1px solid rgba(168,85,247,0.2)", borderRadius: "4px", color: "white", outline: "none" }}
-            />
-          </div>
-          <button
-            onClick={() => generate.mutate({ type, title })}
-            disabled={generate.isLoading}
-            className="w-full py-3 font-bold tracking-widest text-sm transition-all"
-            style={{
-              background: generate.isLoading ? "rgba(168,85,247,0.1)" : "rgba(168,85,247,0.2)",
-              border: "1px solid rgba(168,85,247,0.4)",
-              color: "#a855f7",
-              borderRadius: "4px",
-              cursor: generate.isLoading ? "not-allowed" : "pointer",
-            }}
-          >
-            {generate.isLoading ? "GENERATING..." : "GENERATE ANIMATION"}
-          </button>
-        </div>
-      </NeonCard>
-
-      <NeonCard className="p-6 flex flex-col items-center justify-center min-h-[300px]">
-        {videoUrl ? (
-          <div className="w-full">
-            <h3 className="text-xs font-bold tracking-widest mb-4 text-center" style={{ color: "#a855f7" }}>RENDER COMPLETE</h3>
-            <video controls className="w-full rounded-lg border border-purple-500/30 shadow-2xl shadow-purple-500/10">
-              <source src={videoUrl} type="video/mp4" />
-            </video>
-            <a 
-              href={videoUrl} 
-              download 
-              className="block mt-4 text-center text-xs font-bold hover:underline"
-              style={{ color: "rgba(168,85,247,0.8)" }}
-            >
-              DOWNLOAD MP4
-            </a>
-          </div>
-        ) : (
-          <div className="text-center space-y-4">
-            <div className="w-16 h-16 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mx-auto">
-              <Video className="w-8 h-8 text-purple-500/40" />
-            </div>
-            <div>
-              <p className="text-sm font-bold text-white/60">No Animation Rendered</p>
-              <p className="text-xs text-white/30 mt-1">Configure parameters and click generate</p>
-            </div>
-          </div>
-        )}
-      </NeonCard>
-    </div>
-  );
-}
-
 // ─── Main Page ────────────────────────────────────────────────────────────────
 const TOOLS = [
   { id: "kelly", label: "Kelly Criterion", icon: Calculator, color: "#00ff88" },
   { id: "parlay", label: "Parlay Optimizer", icon: Layers, color: "#a855f7" },
   { id: "steam", label: "Steam Moves", icon: TrendingUp, color: "#00d4ff" },
   { id: "public", label: "Public Betting %", icon: Eye, color: "#ff4d8f" },
-  { id: "animator", label: "Manim Animator", icon: Play, color: "#a855f7" },
 ];
 
 export default function Tools() {
@@ -729,7 +634,6 @@ export default function Tools() {
         {activeTool === "parlay" && <ParlayOptimizer />}
         {activeTool === "steam" && <SteamMoves />}
         {activeTool === "public" && <PublicBetting />}
-        {activeTool === "animator" && <ManimAnimatorTool />}
       </div>
     </div>
   );

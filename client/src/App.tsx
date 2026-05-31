@@ -24,7 +24,6 @@ import SignUp from "@/pages/SignUp";
 import Login from "@/pages/Login";
 import AccountSettings from "@/pages/AccountSettings";
 import AdminPromos from "@/pages/AdminPromos";
-import WebScraper from "@/pages/WebScraper";
 
 function Router() {
   return (
@@ -49,7 +48,6 @@ function Router() {
       <Route path="/login" component={Login} />
       <Route path="/account-settings" component={AccountSettings} />
       <Route path="/admin/promos" component={AdminPromos} />
-      <Route path="/web-scraper" component={WebScraper} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>
