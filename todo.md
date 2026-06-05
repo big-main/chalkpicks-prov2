@@ -207,13 +207,13 @@
 - [x] Integrate real player stats API (ESPN public API)
 - [x] Add live scores widget with real-time updates
 - [ ] Premium UI redesign (gold/green brand, better cards, animations)
-- [ ] Fix Stripe pricing to match tiers ($9.99/$29.99/$199.99)
+- [x] Fix Stripe pricing to match tiers ($9.99/$29.99/$199.99) — using backend checkout sessions
 - [x] Add sponsor section and ad placements
 - [ ] Add referral system for viral growth
 - [ ] Add social proof (testimonials, win streaks, user count)
 - [ ] Add more user tools (parlay builder, bankroll tracker, bet history export)
-- [ ] Ensure signup/login works perfectly
-- [ ] Ensure promo code LAUNCH50 works in checkout
+- [x] Ensure signup/login works perfectly (email/password auth with bcrypt)
+- [x] Ensure promo code LAUNCH50 works in checkout (backend checkout with promo validation)
 - [ ] Add Google Analytics and search console integration
 - [ ] Performance optimization (lazy loading, code splitting)
 - [ ] Mobile-first responsive polish
