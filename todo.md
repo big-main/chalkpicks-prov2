@@ -198,3 +198,22 @@
 - [x] Fix database query error on Sign-Up page (select fields mismatch) — Applied migration to add passwordHash column
 - [x] Audit all auth flows for database compatibility — Auth flows verified working
 - [x] Fix any other runtime errors found — Dev server running with no critical errors
+
+
+## ChalkPicks V2 — Complete Revamp
+- [x] Fix CSS @import ordering warning
+- [x] Add SEO meta tags, sitemap, robots.txt, structured data for Google visibility
+- [x] Add real ESPN/sports news ticker with live data
+- [x] Integrate real player stats API (ESPN public API)
+- [x] Add live scores widget with real-time updates
+- [ ] Premium UI redesign (gold/green brand, better cards, animations)
+- [ ] Fix Stripe pricing to match tiers ($9.99/$29.99/$199.99)
+- [x] Add sponsor section and ad placements
+- [ ] Add referral system for viral growth
+- [ ] Add social proof (testimonials, win streaks, user count)
+- [ ] Add more user tools (parlay builder, bankroll tracker, bet history export)
+- [ ] Ensure signup/login works perfectly
+- [ ] Ensure promo code LAUNCH50 works in checkout
+- [ ] Add Google Analytics and search console integration
+- [ ] Performance optimization (lazy loading, code splitting)
+- [ ] Mobile-first responsive polish

@@ -10,4 +10,4 @@ Disallow: /dashboard
 Disallow: /api/
 Disallow: /payment/
 
-Sitemap: /sitemap.xml
+Sitemap: https://chalkpicks.live/sitemap.xml

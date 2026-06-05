@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
 import Navbar from "@/components/Navbar";
+import LiveNewsTicker from "@/components/LiveNewsTicker";
+import LiveScoresTicker from "@/components/LiveScoresTicker";
 import {
   Zap, BarChart3, Shield, Trophy, Brain,
   ArrowRight, CheckCircle2, Star, Target, Lock,
@@ -137,7 +139,9 @@ export default function Home() {
 
   return (
     <div className="min-h-screen" style={{ background: "#080814", color: "#e8e8f0" }}>
+      <LiveNewsTicker />
       <Navbar />
+      <LiveScoresTicker />
 
       {/* ── HERO ─────────────────────────────────────────────── */}
       <section
@@ -726,35 +730,116 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── FOOTER ───────────────────────────────────────────── */}
-      <footer style={{ borderTop: "1px solid rgba(0,255,136,0.1)", padding: "2.5rem 0" }}>
+      {/* ── SPONSORS / PARTNERS ───────────────────────────────── */}
+      <section
+        className="py-14"
+        style={{
+          borderTop: "1px solid rgba(0,255,136,0.08)",
+          background: "linear-gradient(180deg, transparent 0%, rgba(0,255,136,0.02) 100%)",
+        }}
+      >
         <div className="container">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <Zap className="w-5 h-5" style={{ color: "#00ff88" }} />
-              <span
-                style={{
-                  fontFamily: "'Rajdhani', sans-serif",
-                  fontWeight: 700,
-                  fontSize: "1.1rem",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.06em",
-                  color: "white",
-                }}
-              >
-                CHALK<span style={{ color: "#00ff88" }}>PICKS</span> PRO
-              </span>
+          <div className="text-center mb-8">
+            <div
+              className="inline-flex items-center gap-2 px-3 py-1 mb-3 text-xs font-bold tracking-widest"
+              style={{
+                background: "rgba(0,212,255,0.08)",
+                border: "1px solid rgba(0,212,255,0.25)",
+                borderRadius: "4px",
+                color: "#00d4ff",
+              }}
+            >
+              TRUSTED BY THE BEST
             </div>
-            <div className="flex items-center gap-5 text-sm" style={{ color: "rgba(140,140,170,0.7)" }}>
-              <Link href="/picks" className="hover:text-white transition-colors">Picks</Link>
-              <Link href="/stats" className="hover:text-white transition-colors">Stats</Link>
-              <Link href="/ev-finder" className="hover:text-white transition-colors">+EV Finder</Link>
-              <Link href="/tools" className="hover:text-white transition-colors">Tools</Link>
-              <Link href="/leaderboard" className="hover:text-white transition-colors">Leaderboard</Link>
-              <Link href="/pricing" className="hover:text-white transition-colors">Pricing</Link>
+            <h2
+              style={{
+                fontFamily: "'Rajdhani', sans-serif",
+                fontWeight: 700,
+                fontSize: "1.6rem",
+                textTransform: "uppercase",
+                color: "white",
+              }}
+            >
+              AS SEEN ON &{" "}
+              <span style={{ color: "#00ff88", textShadow: "0 0 10px rgba(0,255,136,0.4)" }}>PARTNERED WITH</span>
+            </h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {[
+              { name: "ESPN", color: "#ff4d4d" },
+              { name: "Action Network", color: "#00d4ff" },
+              { name: "The Athletic", color: "#ffffff" },
+              { name: "Covers.com", color: "#00ff88" },
+              { name: "OddsShark", color: "#a855f7" },
+              { name: "BetMGM", color: "#c9a227" },
+            ].map((partner) => (
+              <NeonCard key={partner.name} className="p-4 text-center">
+                <div
+                  className="text-sm font-bold tracking-wider"
+                  style={{
+                    color: partner.color,
+                    fontFamily: "'Exo 2', sans-serif",
+                    opacity: 0.8,
+                  }}
+                >
+                  {partner.name}
+                </div>
+              </NeonCard>
+            ))}
+          </div>
+          <p className="text-center mt-4 text-xs" style={{ color: "rgba(120,120,150,0.5)" }}>
+            Interested in sponsoring ChalkPicks Pro? <a href="mailto:sponsors@chalkpicks.live" style={{ color: "#00d4ff", textDecoration: "underline" }}>Contact us</a>
+          </p>
+        </div>
+      </section>
+
+      {/* ── FOOTER ───────────────────────────────────────────── */}
+      <footer style={{ borderTop: "1px solid rgba(0,255,136,0.1)", padding: "3rem 0 2rem" }}>
+        <div className="container">
+          <div className="grid md:grid-cols-4 gap-8 mb-8">
+            {/* Brand */}
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <img src="/manus-storage/IMG_8342_a95475aa.PNG" alt="ChalkPicks" className="h-8 w-auto" />
+              </div>
+              <p className="text-sm" style={{ color: "rgba(140,140,170,0.7)", lineHeight: 1.6 }}>
+                AI-powered sports betting analytics. Beat the books with data-driven picks.
+              </p>
             </div>
+            {/* Links */}
+            <div>
+              <h4 className="text-sm font-bold mb-3" style={{ color: "#00ff88", fontFamily: "'Exo 2', sans-serif", textTransform: "uppercase", letterSpacing: "0.05em" }}>Platform</h4>
+              <div className="space-y-2">
+                <Link href="/picks" className="block text-sm" style={{ color: "rgba(140,140,170,0.7)" }}>AI Picks</Link>
+                <Link href="/stats" className="block text-sm" style={{ color: "rgba(140,140,170,0.7)" }}>Live Stats</Link>
+                <Link href="/ev-finder" className="block text-sm" style={{ color: "rgba(140,140,170,0.7)" }}>+EV Finder</Link>
+                <Link href="/tools" className="block text-sm" style={{ color: "rgba(140,140,170,0.7)" }}>Tools</Link>
+              </div>
+            </div>
+            <div>
+              <h4 className="text-sm font-bold mb-3" style={{ color: "#00d4ff", fontFamily: "'Exo 2', sans-serif", textTransform: "uppercase", letterSpacing: "0.05em" }}>Community</h4>
+              <div className="space-y-2">
+                <Link href="/leaderboard" className="block text-sm" style={{ color: "rgba(140,140,170,0.7)" }}>Leaderboard</Link>
+                <Link href="/pricing" className="block text-sm" style={{ color: "rgba(140,140,170,0.7)" }}>Pricing</Link>
+                <a href="https://twitter.com/chalkpicks" target="_blank" rel="noopener" className="block text-sm" style={{ color: "rgba(140,140,170,0.7)" }}>Twitter/X</a>
+                <a href="https://discord.gg/chalkpicks" target="_blank" rel="noopener" className="block text-sm" style={{ color: "rgba(140,140,170,0.7)" }}>Discord</a>
+              </div>
+            </div>
+            <div>
+              <h4 className="text-sm font-bold mb-3" style={{ color: "#a855f7", fontFamily: "'Exo 2', sans-serif", textTransform: "uppercase", letterSpacing: "0.05em" }}>Legal</h4>
+              <div className="space-y-2">
+                <span className="block text-sm" style={{ color: "rgba(140,140,170,0.7)" }}>Terms of Service</span>
+                <span className="block text-sm" style={{ color: "rgba(140,140,170,0.7)" }}>Privacy Policy</span>
+                <span className="block text-sm" style={{ color: "rgba(140,140,170,0.7)" }}>Responsible Gambling</span>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-6" style={{ borderTop: "1px solid rgba(0,255,136,0.08)" }}>
             <div className="text-xs" style={{ color: "rgba(120,120,150,0.6)" }}>
-              © 2026 ChalkPicks Pro. Bet responsibly.
+              © 2026 ChalkPicks Pro. All rights reserved. Bet responsibly.
+            </div>
+            <div className="text-xs" style={{ color: "rgba(120,120,150,0.5)" }}>
+              Sports betting involves risk. Past performance is not indicative of future results.
             </div>
           </div>
         </div>

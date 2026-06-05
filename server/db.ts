@@ -152,3 +152,9 @@ export async function getPromoCodeById(id: number) {
   const result = await db.select().from(promoCodes).where(eq(promoCodes.id, id)).limit(1);
   return result.length > 0 ? result[0] : undefined;
 }
+
+export async function deactivatePromoCode(id: number) {
+  const db = await getDb();
+  if (!db) return;
+  await db.update(promoCodes).set({ isActive: false }).where(eq(promoCodes.id, id));
+}

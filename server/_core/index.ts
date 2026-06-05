@@ -7,6 +7,7 @@ import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
 import { registerStripeWebhook } from "../webhook";
+import { registerStorageProxy } from "./storageProxy";
 import { registerPayPalWebhook } from "../paypal-webhook";
 import { startScheduler } from "../scheduler";
 
@@ -38,6 +39,9 @@ async function startServer() {
   // Register webhooks BEFORE body parsers (needs raw body)
   registerStripeWebhook(app);
   registerPayPalWebhook(app);
+  // Storage proxy for uploaded assets
+  registerStorageProxy(app);
+
   // Configure body parser with larger size limit for file uploads
   app.use(express.json({ limit: "50mb" }));
   app.use(express.urlencoded({ limit: "50mb", extended: true }));

@@ -48,34 +48,13 @@ export default function Navbar() {
       <div className="container">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div
-              className="w-8 h-8 flex items-center justify-center transition-all group-hover:scale-105"
-              style={{
-                border: "1.5px solid #00ff88",
-                borderRadius: "6px",
-                boxShadow: "0 0 10px rgba(0,255,136,0.3), inset 0 0 8px rgba(0,255,136,0.08)",
-              }}
-            >
-              <Zap className="w-4 h-4" style={{ color: "#00ff88" }} />
-            </div>
-            <span
-              className="font-display text-xl text-white"
-              style={{ fontFamily: "'Rajdhani', sans-serif", fontWeight: 700, letterSpacing: "0.06em" }}
-            >
-              CHALK<span style={{ color: "#00ff88", textShadow: "0 0 10px rgba(0,255,136,0.5)" }}>PICKS</span>
-            </span>
-            <span
-              className="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[9px] font-bold tracking-widest"
-              style={{
-                background: "rgba(0,255,136,0.1)",
-                border: "1px solid rgba(0,255,136,0.3)",
-                borderRadius: "3px",
-                color: "#00ff88",
-              }}
-            >
-              PRO
-            </span>
+          <Link href="/" className="flex items-center gap-2 group">
+            <img
+              src="/manus-storage/IMG_8342_a95475aa.PNG"
+              alt="ChalkPicks"
+              className="h-10 w-auto transition-all group-hover:scale-105"
+              style={{ filter: "drop-shadow(0 0 8px rgba(0,255,136,0.3))" }}
+            />
           </Link>
 
           {/* Desktop Nav */}

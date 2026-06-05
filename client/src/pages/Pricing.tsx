@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import Navbar from "@/components/Navbar";
 import { PromoCodeInput } from "@/components/PromoCodeInput";
@@ -82,19 +82,7 @@ function CheckMark({ value, color }: { value: boolean; color: string }) {
 
 // ─── Stripe Buy Button web component (typed for TSX) ─────────────────────────
 
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      "stripe-buy-button": React.DetailedHTMLProps<
-        React.HTMLAttributes<HTMLElement> & {
-          "buy-button-id": string;
-          "publishable-key": string;
-        },
-        HTMLElement
-      >;
-    }
-  }
-}
+
 
 // ─── Main page ────────────────────────────────────────────────────────────────
 
