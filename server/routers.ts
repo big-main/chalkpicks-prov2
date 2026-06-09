@@ -18,6 +18,7 @@ import { paypalRouter } from "./routers/paypal";
 import { oddsRouter } from "./routers/odds";
 import { aiPicksRouter } from "./routers/aiPicks";
 import { promoCodeRouter } from "./routers/promoCode";
+import { kalshiRouter } from "./routers/kalshi";
 import * as db from "./db";
 import type { User } from "../drizzle/schema";
 import type { Response, Request } from "express";
@@ -93,6 +94,7 @@ export const appRouter = router({
   odds: oddsRouter,
   aiPicks: aiPicksRouter,
   promoCode: promoCodeRouter,
+  kalshi: kalshiRouter,
 });
 
 export type AppRouter = typeof appRouter;

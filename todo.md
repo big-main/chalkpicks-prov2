@@ -217,3 +217,16 @@
 - [x] Add Google Analytics GA4 (G-Y2LHJE4F1T) integration
 - [x] Performance optimization (lazy loading, code splitting, vendor chunking)
 - [x] Mobile-first responsive polish (touch targets, safe areas, responsive grid)
+
+
+## Kalshi Prediction Market Integration (NEW)
+- [x] Add Kalshi API integration for market data fetching
+- [x] Create Kalshi Markets page with real-time market listings
+- [x] Build market analysis tools (implied odds, sharp money detection)
+- [x] Add market sentiment indicators
+- [x] Create trading signals based on Kalshi market movements
+- [ ] Integrate Kalshi signals into AI picks engine (future enhancement)
+- [ ] Add market comparison (Kalshi vs traditional sportsbooks) (future enhancement)
+- [x] Create market alerts for significant line movements
+- [ ] Build market analytics dashboard (future enhancement)
+- [ ] Test Kalshi integration end-to-end

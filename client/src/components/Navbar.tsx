@@ -20,6 +20,7 @@ const navLinks = [
   { href: "/ev-finder", label: "+EV Finder" },
   { href: "/backtesting", label: "Backtest" },
   { href: "/leaderboard", label: "Leaderboard" },
+  { href: "/kalshi", label: "Kalshi" },
   { href: "/tools", label: "Tools" },
   { href: "/pricing", label: "Pricing" },
 ];

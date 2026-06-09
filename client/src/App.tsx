@@ -30,6 +30,7 @@ const SignUp = lazy(() => import("@/pages/SignUp"));
 const Login = lazy(() => import("@/pages/Login"));
 const AccountSettings = lazy(() => import("@/pages/AccountSettings"));
 const AdminPromos = lazy(() => import("@/pages/AdminPromos"));
+const KalshiMarkets = lazy(() => import("@/pages/KalshiMarkets"));
 
 function PageLoader() {
   return (
@@ -72,6 +73,7 @@ function Router() {
         <Route path="/login" component={Login} />
         <Route path="/account-settings" component={AccountSettings} />
         <Route path="/admin/promos" component={AdminPromos} />
+        <Route path="/kalshi" component={KalshiMarkets} />
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
       </Switch>
