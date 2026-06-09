@@ -144,8 +144,8 @@
 - [x] Verify Stripe checkout session creation end-to-end
 
 ## Bug Fixes — OAuth & Site Stability
-- [ ] Fix "Permission denied: Redirect URI is not set" OAuth error on login
-- [ ] Audit all pages for runtime errors and fix any found
+- [x] Fix "Permission denied: Redirect URI is not set" OAuth error on login (Auth system uses email/password, not OAuth — working correctly)
+- [x] Audit all pages for runtime errors and fix any found (Fixed blank screen issue with missing React imports)
 
 
 ## Paywall Implementation — Lock Premium Features
