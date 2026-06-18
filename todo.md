@@ -98,7 +98,7 @@
 - [ ] Add real scores/results feed via API
 - [ ] Wire real odds data into AI picks engine
 - [x] Add Sharp vs Public split indicator on picks (via steam moves page)
-- [ ] Add live game scores widget in navbar
+- [ ] Wire LiveScoresTicker into Navbar and verify rendering on desktop/mobile
 
 ## Payment System Migration (NEW)
 - [x] Replace Stripe with PayPal integration
@@ -229,4 +229,4 @@
 - [ ] Add market comparison (Kalshi vs traditional sportsbooks) (future enhancement)
 - [x] Create market alerts for significant line movements
 - [ ] Build market analytics dashboard (future enhancement)
-- [ ] Test Kalshi integration end-to-end
+- [ ] Add automated tests for Kalshi service/router and verify KalshiMarkets page loads real data
