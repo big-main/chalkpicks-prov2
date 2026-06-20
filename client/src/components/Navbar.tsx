@@ -11,6 +11,7 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Link, useLocation } from "wouter";
 import { useState } from "react";
+import { useAuth } from "@/_core/hooks/useAuth";
 import { Menu, X, Zap, ChevronDown, Bell, Crown, TrendingUp, BarChart3, Calculator, Layers } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 
