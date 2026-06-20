@@ -2,7 +2,7 @@ import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { publicProcedure, protectedProcedure, adminProcedure, router } from "../_core/trpc";
 import * as db from "../db";
-import { promoCodes, promoCodeUsage } from "../../drizzle/schema";
+import { promoCodes } from "../../drizzle/schema";
 import { eq } from "drizzle-orm";
 
 // Pricing plans - must match subscription.ts PLANS

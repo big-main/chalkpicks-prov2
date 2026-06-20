@@ -78,7 +78,7 @@ export default function KalshiMarkets() {
                   <div className="flex-1">
                     <h3 className="font-semibold text-white text-sm mb-1">{alert.market.title}</h3>
                     <p className="text-xs text-slate-400 mb-2">
-                      {alert.sharp_money_detected ? "Sharp Money Detected" : "Line Movement Alert"}
+                      {alert.sharp_money_detected ? "⚡ Sharp Money Detected" : "Line Movement Alert"}
                     </p>
                     <div className="flex items-center gap-2">
                       <span className="text-xs bg-amber-500/20 text-amber-300 px-2 py-1 rounded">
@@ -210,10 +210,10 @@ function MarketCard({ market }: { market: any }) {
           variant="outline"
         >
           {analysis.trading_signal === "buy_yes"
-            ? "BUY YES"
+            ? "🟢 BUY YES"
             : analysis.trading_signal === "buy_no"
-              ? "BUY NO"
-              : "HOLD"}
+              ? "🔴 BUY NO"
+              : "⏸️ HOLD"}
         </Button>
       )}
     </Card>

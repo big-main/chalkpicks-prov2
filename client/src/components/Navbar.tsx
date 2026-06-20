@@ -11,7 +11,6 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Link, useLocation } from "wouter";
 import { useState } from "react";
-import { useAuth } from "@/_core/hooks/useAuth";
 import { Menu, X, Zap, ChevronDown, Bell, Crown, TrendingUp, BarChart3, Calculator, Layers } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 
@@ -142,16 +141,16 @@ export default function Navbar() {
                       </Badge>
                     </div>
                     <DropdownMenuSeparator style={{ borderColor: "rgba(0,255,136,0.1)" }} />
-                    <DropdownMenuItem>
+                    <DropdownMenuItem asChild>
                       <Link href="/dashboard">My Dashboard</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem asChild>
                       <Link href="/account-settings">Account Settings</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem asChild>
                       <Link href="/tools">Power Tools</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem asChild>
                       <Link href="/pricing">Upgrade Plan</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator style={{ borderColor: "rgba(0,255,136,0.1)" }} />

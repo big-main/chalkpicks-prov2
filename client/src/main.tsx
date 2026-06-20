@@ -1,13 +1,3 @@
-// Global error handler for debugging
-if (typeof window !== 'undefined') {
-  window.addEventListener('error', (e) => {
-    console.error('[GLOBAL ERROR]', e.error || e.message, e.stack);
-  });
-  window.addEventListener('unhandledrejection', (e) => {
-    console.error('[UNHANDLED REJECTION]', e.reason);
-  });
-}
-
 import { trpc } from "@/lib/trpc";
 import { UNAUTHED_ERR_MSG } from '@shared/const';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

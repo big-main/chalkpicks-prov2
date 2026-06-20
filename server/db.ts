@@ -1,6 +1,7 @@
 import { drizzle } from "drizzle-orm/mysql2";
-import { users, promoCodes, promoCodeUsage, type InsertPromoCode, type InsertPromoCodeUsage } from "../drizzle/schema";
+import { users, promoCodes, promoCodeUsage } from "../drizzle/schema";
 import { eq, sql, type SQL } from "drizzle-orm";
+import type { InsertPromoCode, InsertPromoCodeUsage } from "../drizzle/schema";
 
 let _db: ReturnType<typeof drizzle> | null = null;
 

@@ -98,7 +98,7 @@
 - [ ] Add real scores/results feed via API
 - [ ] Wire real odds data into AI picks engine
 - [x] Add Sharp vs Public split indicator on picks (via steam moves page)
-- [ ] Wire LiveScoresTicker into Navbar and verify rendering on desktop/mobile
+- [ ] Add live game scores widget in navbar
 
 ## Payment System Migration (NEW)
 - [x] Replace Stripe with PayPal integration
@@ -229,21 +229,4 @@
 - [ ] Add market comparison (Kalshi vs traditional sportsbooks) (future enhancement)
 - [x] Create market alerts for significant line movements
 - [ ] Build market analytics dashboard (future enhancement)
-- [ ] Add automated tests for Kalshi service/router and verify KalshiMarkets page loads real data
-
-
-## FINAL SPRINT — Make ChalkPicks #1 Platform
-- [ ] Fix remaining TypeScript errors in CLV router (closingLineOdds field)
-- [ ] Build referral system UI page with invite links and rewards tracking
-- [ ] Add weather impact model for NFL/MLB games (wind, temperature, precipitation)
-- [ ] Build comprehensive Parlay Builder with correlation analysis
-- [ ] Build Bankroll Tracker with session management and ROI charts
-- [ ] Add bet export (CSV/PDF) functionality
-- [ ] Implement live game scores widget in navbar (ESPN real-time updates)
-- [ ] Add premium UI animations and micro-interactions
-- [ ] Build competitor comparison page (ChalkPicks vs competitors)
-- [ ] Add sponsor/partnership section with logos
-- [ ] Implement advanced search and filtering across all pages
-- [ ] Add user testimonials carousel with real data
-- [ ] Build admin dashboard for managing picks, users, analytics
-- [ ] Deploy to production and verify all features working live
+- [ ] Test Kalshi integration end-to-end
