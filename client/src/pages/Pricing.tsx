@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import Navbar from "@/components/Navbar";
 import { trpc } from "@/lib/trpc";
-import { Check, Zap, Crown, Star, Shield, Lock, Tag, Loader2 } from "lucide-react";
+import { Check, Zap, Crown, Star, Shield, Lock, Tag, Loader2, ArrowRight } from "lucide-react";
 
 // ─── Plan meta ────────────────────────────────────────────────────────────────
 
@@ -18,7 +18,57 @@ const PLAN_META: Record<string, {
   yearly:  { icon: Star,  color: "#a855f7", glow: "rgba(168,85,247,0.25)",  badge: "Best Value" },
 };
 
-// ─── Feature comparison ───────────────────────────────────────────────────────
+// ─── Detailed feature comparison ───────────────────────────────────────────────
+
+const FEATURE_CATEGORIES = [
+  {
+    category: "Core Features",
+    features: [
+      { name: "AI-generated picks (daily)", daily: true, monthly: true, yearly: true, description: "Daily AI picks with confidence scores" },
+      { name: "Confidence & edge scores", daily: true, monthly: true, yearly: true, description: "AI confidence and expected value metrics" },
+      { name: "Live stats & player data", daily: true, monthly: true, yearly: true, description: "Real-time stats from 10+ sportsbooks" },
+      { name: "Leaderboard access", daily: true, monthly: true, yearly: true, description: "View top bettors and their performance" },
+    ]
+  },
+  {
+    category: "Premium Analytics",
+    features: [
+      { name: "+EV Finder", daily: false, monthly: true, yearly: true, description: "Find positive expected value opportunities" },
+      { name: "Steam move detector", daily: false, monthly: true, yearly: true, description: "Detect sharp money and line movements" },
+      { name: "CLV Tracker", daily: false, monthly: true, yearly: true, description: "Track closing line value for your bets" },
+      { name: "Backtesting engine", daily: false, monthly: true, yearly: true, description: "Test strategies against historical data" },
+    ]
+  },
+  {
+    category: "Tools & Calculators",
+    features: [
+      { name: "Kelly Criterion calculator", daily: false, monthly: true, yearly: true, description: "Optimal bet sizing based on edge" },
+      { name: "Parlay optimizer", daily: false, monthly: true, yearly: true, description: "Build and analyze multi-leg parlays" },
+      { name: "Arbitrage finder", daily: false, monthly: true, yearly: true, description: "Find risk-free arbitrage opportunities" },
+      { name: "Bankroll tracker", daily: false, monthly: true, yearly: true, description: "Track P&L, ROI, and betting performance" },
+    ]
+  },
+  {
+    category: "Market Data",
+    features: [
+      { name: "Kalshi prediction markets", daily: false, monthly: true, yearly: true, description: "Access to real prediction market data" },
+      { name: "Odds comparison (18+ books)", daily: false, monthly: true, yearly: true, description: "Compare odds across major sportsbooks" },
+      { name: "Line movement history", daily: false, monthly: true, yearly: true, description: "Historical line movement tracking" },
+    ]
+  },
+  {
+    category: "Support & Community",
+    features: [
+      { name: "Email pick alerts", daily: false, monthly: true, yearly: true, description: "Daily picks delivered to your inbox" },
+      { name: "Email support", daily: false, monthly: true, yearly: true, description: "Priority email support" },
+      { name: "VIP Discord access", daily: false, monthly: false, yearly: true, description: "Exclusive Discord community for elite members" },
+      { name: "1-on-1 strategy sessions", daily: false, monthly: false, yearly: true, description: "Personal consulting with betting experts" },
+      { name: "Advanced backtesting", daily: false, monthly: false, yearly: true, description: "Deep historical analysis and simulations" },
+    ]
+  },
+];
+
+// ─── Feature comparison (legacy format for table) ───────────────────────────────
 
 const FEATURE_ROWS = [
   { feature: "AI-generated picks (daily)",     daily: true,  monthly: true,  yearly: true  },
@@ -416,42 +466,82 @@ export default function Pricing() {
         </div>
 
         {/* Feature comparison toggle */}
-        <div className="text-center mb-6">
+        <div className="text-center mb-8">
           <button
             onClick={() => setShowComparison(!showComparison)}
-            className="text-sm font-bold tracking-wider px-5 py-2.5 transition-all"
+            className="text-sm font-bold tracking-wider px-5 py-2.5 transition-all flex items-center justify-center gap-2 mx-auto"
             style={{ background: "rgba(0,212,255,0.08)", border: "1px solid rgba(0,212,255,0.25)", borderRadius: "5px", color: "#00d4ff", cursor: "pointer", fontFamily: "'Exo 2', sans-serif" }}
           >
-            {showComparison ? "▲ HIDE" : "▼ SHOW"} FULL FEATURE COMPARISON
+            {showComparison ? "▲ HIDE" : "▼ SHOW"} DETAILED FEATURE COMPARISON
+            <ArrowRight className="w-4 h-4" style={{ transform: showComparison ? "rotate(90deg)" : "rotate(0deg)", transition: "transform 0.3s" }} />
           </button>
         </div>
 
-        {/* Feature comparison table */}
+        {/* Enhanced feature comparison table */}
         {showComparison && (
-          <NeonCard className="max-w-4xl mx-auto overflow-hidden mb-12">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr style={{ borderBottom: "1px solid rgba(0,255,136,0.1)" }}>
-                    <th className="text-left py-4 px-5" style={{ color: "rgba(140,140,170,0.7)", fontWeight: 600, width: "40%" }}>FEATURE</th>
-                    {[{ label: "Daily", color: "#00d4ff" }, { label: "Monthly", color: "#00ff88" }, { label: "Yearly", color: "#a855f7" }].map(({ label, color }) => (
-                      <th key={label} className="py-4 px-4 text-center" style={{ color, fontFamily: "'Rajdhani', sans-serif", fontWeight: 700, fontSize: "1rem", textTransform: "uppercase" }}>
-                        {label}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {FEATURE_ROWS.map((row, i) => (
-                    <tr key={i} style={{ borderBottom: "1px solid rgba(0,255,136,0.05)", background: i % 2 === 0 ? "transparent" : "rgba(0,255,136,0.02)" }}>
-                      <td className="py-3 px-5" style={{ color: "rgba(200,200,220,0.8)" }}>{row.feature}</td>
-                      <td className="py-3 px-4"><CheckMark value={row.daily}   color="#00d4ff" /></td>
-                      <td className="py-3 px-4"><CheckMark value={row.monthly} color="#00ff88" /></td>
-                      <td className="py-3 px-4"><CheckMark value={row.yearly}  color="#a855f7" /></td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+          <NeonCard className="max-w-5xl mx-auto overflow-hidden mb-12">
+            <div className="p-8">
+              <h3 style={{ fontFamily: "'Rajdhani', sans-serif", fontWeight: 700, fontSize: "1.5rem", textTransform: "uppercase", color: "white", marginBottom: "1.5rem" }}>
+                Complete Feature Breakdown
+              </h3>
+
+              {/* Categorized features */}
+              <div className="space-y-8">
+                {FEATURE_CATEGORIES.map((category, catIdx) => (
+                  <div key={catIdx}>
+                    <h4 style={{ fontFamily: "'Exo 2', sans-serif", fontWeight: 600, fontSize: "0.85rem", textTransform: "uppercase", color: "#00ff88", letterSpacing: "0.1em", marginBottom: "1rem" }}>
+                      {category.category}
+                    </h4>
+                    <div className="space-y-3">
+                      {category.features.map((feature, fIdx) => (
+                        <div key={fIdx} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-start p-3 rounded" style={{ background: "rgba(0,255,136,0.02)", borderLeft: "2px solid rgba(0,255,136,0.1)" }}>
+                          <div className="md:col-span-2">
+                            <div className="font-semibold text-sm" style={{ color: "rgba(200,200,220,0.9)" }}>
+                              {feature.name}
+                            </div>
+                            <div className="text-xs mt-1" style={{ color: "rgba(140,140,170,0.6)" }}>
+                              {feature.description}
+                            </div>
+                          </div>
+                          <div className="flex justify-center">
+                            <CheckMark value={feature.daily} color="#00d4ff" />
+                          </div>
+                          <div className="flex justify-center">
+                            <CheckMark value={feature.monthly} color="#00ff88" />
+                          </div>
+                          <div className="flex justify-center">
+                            <CheckMark value={feature.yearly} color="#a855f7" />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Legend */}
+              <div className="mt-8 pt-6 border-t" style={{ borderColor: "rgba(0,255,136,0.1)" }}>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 flex items-center justify-center rounded" style={{ background: "rgba(0,212,255,0.1)", border: "1px solid rgba(0,212,255,0.3)" }}>
+                      <Check className="w-3 h-3" style={{ color: "#00d4ff" }} />
+                    </div>
+                    <span style={{ color: "rgba(140,140,170,0.7)" }}>Daily Pass ($9.99/day)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 flex items-center justify-center rounded" style={{ background: "rgba(0,255,136,0.1)", border: "1px solid rgba(0,255,136,0.3)" }}>
+                      <Check className="w-3 h-3" style={{ color: "#00ff88" }} />
+                    </div>
+                    <span style={{ color: "rgba(140,140,170,0.7)" }}>Monthly Pro ($29.99/mo)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 flex items-center justify-center rounded" style={{ background: "rgba(168,85,247,0.1)", border: "1px solid rgba(168,85,247,0.3)" }}>
+                      <Check className="w-3 h-3" style={{ color: "#a855f7" }} />
+                    </div>
+                    <span style={{ color: "rgba(140,140,170,0.7)" }}>Annual Elite ($199.99/yr)</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </NeonCard>
         )}

@@ -248,3 +248,43 @@
 - [x] Create paywall/upgrade modals for locked features (Paywall component already exists)
 - [x] Test tier-gating end-to-end with different subscription tiers (Kalshi and CLV Tracker properly gated)
 - [x] Add Subscription Dashboard page displaying current tier and active premium features
+
+
+## Real-Time Live Data (24/7) (NEW)
+- [x] Implement WebSocket real-time updates for live scores and stats (WebSocket server + React hooks)
+- [x] Add real-time Kalshi market data streaming (streaming service ready)
+- [x] Implement live odds updates from multiple sportsbooks (streaming service ready)
+- [x] Add real-time leaderboard updates and user activity (streaming service ready)
+- [x] Test 24/7 live data and save checkpoint (Build clean, WebSocket infrastructure verified)
+
+## Arbitrage Finder Tool (NEW)
+- [x] Create arbitrage opportunities database tables
+- [x] Build arbitrage finder router with odds comparison
+- [x] Create Arbitrage Finder UI page with tier-gating
+- [x] Add tier-gating to Parlay Builder (Monthly Pro+)
+- [x] Add tier-gating to Bankroll Tracker (Monthly Pro+)
+- [x] Test arbitrage finder end-to-end
+
+## Subscription-Gated Tools Skill (NEW)
+- [x] Create reusable skill for building subscription-gated features
+- [x] Write comprehensive SKILL.md with workflows and examples
+- [x] Create tRPC router template with tier checks
+- [x] Create React FeatureGate component template
+- [x] Create database schema template
+- [x] Create automation script (setup-gated-feature.py)
+- [x] Validate skill and publish
+
+## Remaining Items
+- [ ] Add bet history export (CSV/PDF) functionality
+- [ ] Implement pick ranking by EV edge across 18+ sportsbooks
+- [ ] Add application review workflow for Edge Terminal
+- [ ] Wire tier system to feature access (premium features locked behind tier)
+- [ ] Add "projected P&L YTD" calculation to user dashboard
+- [ ] Create admin panel for reviewing applications
+- [ ] Test Edge Terminal features end-to-end
+- [ ] Add weather impact model for outdoor games (NFL, MLB)
+- [ ] Add real scores/results feed via API
+- [ ] Add live game scores widget in navbar
+- [ ] Build market analytics dashboard
+- [ ] Integrate Kalshi signals into AI picks engine
+- [ ] Add market comparison (Kalshi vs traditional sportsbooks)
