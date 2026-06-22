@@ -123,7 +123,7 @@ export default function UserDashboard() {
               <DashboardMetrics
                 totalBets={summary.totalBets || 0}
                 winningBets={summary.wins || 0}
-                totalProfit={parseFloat(summary.profit?.toString() || "0")}
+                totalProfit={parseFloat(summary.totalProfit?.toString() || "0")}
               />
             </div>
           </div>
