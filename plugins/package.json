@@ -1,0 +1,43 @@
+{
+  "name": "vite-chalkpicks-plugin",
+  "version": "1.0.0",
+  "description": "Comprehensive Vite plugin for Chalkpicks sports betting platform with real-time HMR, data optimization, and caching",
+  "main": "dist/vite-chalkpicks-plugin.js",
+  "types": "dist/vite-chalkpicks-plugin.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/vite-chalkpicks-plugin.js",
+      "types": "./dist/vite-chalkpicks-plugin.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "vite-chalkpicks-plugin.ts"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "test": "vitest",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "vite",
+    "vite-plugin",
+    "chalkpicks",
+    "sports-betting",
+    "hmr",
+    "real-time",
+    "data-optimization",
+    "caching"
+  ],
+  "author": "Chalkpicks Team",
+  "license": "MIT",
+  "peerDependencies": {
+    "vite": "^4.0.0 || ^5.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "vite": "^5.0.0",
+    "vitest": "^0.34.0"
+  }
+}
