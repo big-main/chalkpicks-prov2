@@ -200,7 +200,7 @@ export default function Home() {
             </p>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
               {isAuthenticated ? (
                 <Link href="/picks">
                   <button
@@ -232,25 +232,28 @@ export default function Home() {
                   }}
                   onClick={() => (window.location.href = "/signup")}
                 >
-                  GET STARTED <ArrowRight className="w-4 h-4" />
+                  START 5-DAY FREE TRIAL <ArrowRight className="w-4 h-4" />
                 </button>
               )}
-              <Link href="/ev-finder">
+              <Link href="/pricing">
                 <button
                   className="flex items-center gap-2 px-8 py-3.5 text-base font-semibold tracking-wider transition-all"
                   style={{
                     background: "transparent",
-                    color: "#00d4ff",
+                    color: "#fbbf24",
                     borderRadius: "4px",
                     fontFamily: "'Exo 2', sans-serif",
-                    border: "1px solid rgba(0,212,255,0.4)",
+                    border: "1px solid rgba(251,191,36,0.4)",
                     cursor: "pointer",
                   }}
                 >
-                  EXPLORE +EV FINDER
+                  PAY $5, GET $100 CREDIT
                 </button>
               </Link>
             </div>
+            <p className="text-xs text-muted-foreground/60 mb-16 uppercase tracking-widest font-bold">
+              Limited Time Offer — No Cost, Cancel Anytime
+            </p>
 
             {/* Stats bar */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">

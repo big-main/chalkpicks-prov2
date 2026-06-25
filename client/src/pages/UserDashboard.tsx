@@ -145,6 +145,11 @@ export default function UserDashboard() {
                     <Crown className="w-3 h-3" /> {mySubscription.tier?.charAt(0).toUpperCase()}{mySubscription.tier?.slice(1)} Plan
                   </Badge>
                 )}
+                {mySubscription?.accountBalance !== undefined && mySubscription.accountBalance > 0 && (
+                  <Badge className="bg-amber-500/15 text-amber-500 border-amber-500/30 flex items-center gap-1">
+                    <DollarSign className="w-3 h-3" /> Balance: ${(mySubscription.accountBalance / 100).toFixed(2)}
+                  </Badge>
+                )}
                 <Dialog open={addOpen} onOpenChange={setAddOpen}>
                   <DialogTrigger asChild>
                     <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold h-9">

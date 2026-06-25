@@ -43,7 +43,7 @@ export function registerStripeWebhook(app: express.Application) {
           case "checkout.session.completed": {
             const session = event.data.object as Stripe.Checkout.Session;
             const userId = parseInt(session.metadata?.user_id ?? "0");
-            const tier = (session.metadata?.tier ?? "monthly") as "daily" | "monthly" | "yearly";
+            const tier = (session.metadata?.tier ?? "monthly") as "trial" | "credit" | "daily" | "monthly" | "yearly";
 
             if (!userId) break;
 
@@ -52,13 +52,33 @@ export function registerStripeWebhook(app: express.Application) {
 
             const now = new Date();
             let expiresAt = new Date(now);
-            if (tier === "daily") expiresAt.setDate(expiresAt.getDate() + 1);
-            else if (tier === "monthly") expiresAt.setMonth(expiresAt.getMonth() + 1);
-            else expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+            let subscriptionTier = tier;
+            let accountBalanceToAdd = 0;
+
+            if (tier === "trial") {
+              expiresAt.setDate(expiresAt.getDate() + 5);
+            } else if (tier === "credit") {
+              // Credit offer: add $100 to account balance
+              accountBalanceToAdd = 10000; // $100 in cents
+              subscriptionTier = "free";
+              expiresAt = null as any;
+            } else if (tier === "daily") {
+              expiresAt.setDate(expiresAt.getDate() + 1);
+            } else if (tier === "monthly") {
+              expiresAt.setMonth(expiresAt.getMonth() + 1);
+            } else {
+              expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+            }
+
+            // Get current balance
+            const currentUser = await db.select({ accountBalance: users.accountBalance }).from(users).where(eq(users.id, userId)).limit(1);
+            const currentBalance = currentUser[0] ? parseFloat(currentUser[0].accountBalance.toString()) : 0;
+            const newBalance = currentBalance + accountBalanceToAdd;
 
             await db.update(users).set({
-              subscriptionTier: tier,
-              subscriptionExpiresAt: expiresAt,
+              ...(tier !== "credit" ? { subscriptionTier } : {}),
+              ...(tier !== "credit" ? { subscriptionExpiresAt: expiresAt } : {}),
+              accountBalance: newBalance,
               stripeSubscriptionId: session.subscription?.toString() ?? null,
             }).where(eq(users.id, userId));
 
@@ -72,12 +92,12 @@ export function registerStripeWebhook(app: express.Application) {
               amountCents: session.amount_total ?? 0,
               currency: session.currency ?? "usd",
               startsAt: now,
-              expiresAt,
+              expiresAt: tier === "credit" ? null : expiresAt,
             }).catch(() => {
               // Ignore duplicate key errors — already recorded by activate mutation
             });
 
-            console.log(`[Webhook] Activated ${tier} subscription for user ${userId}`);
+            console.log(`[Webhook] Activated ${tier} for user ${userId}, new balance: $${(newBalance / 100).toFixed(2)}`);
             break;
           }
 

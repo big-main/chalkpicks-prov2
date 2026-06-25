@@ -135,6 +135,19 @@
   ::-webkit-scrollbar-thumb:hover { background: rgba(0,255,136,0.45); }
 
   .font-display { font-family: "Rajdhani", "Exo 2", sans-serif; letter-spacing: 0.06em; text-transform: uppercase; }
+  .text-gritty {
+    position: relative;
+    color: white;
+  }
+  .text-gritty::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
+    opacity: 0.2;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
 
   .text-gold-gradient {
     background: linear-gradient(135deg, #00ff88, #00d4ff);

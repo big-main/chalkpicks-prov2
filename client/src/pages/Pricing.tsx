@@ -13,6 +13,8 @@ const PLAN_META: Record<string, {
   badge?: string;
   popular?: boolean;
 }> = {
+  trial:   { icon: Zap,   color: "#ff6b35", glow: "rgba(255,107,53,0.25)",   badge: "Free Trial" },
+  credit:  { icon: Star,  color: "#fbbf24", glow: "rgba(251,191,36,0.25)",   badge: "Limited Offer", popular: true },
   daily:   { icon: Zap,   color: "#00d4ff", glow: "rgba(0,212,255,0.25)",   badge: "Try it out" },
   monthly: { icon: Crown, color: "#00ff88", glow: "rgba(0,255,136,0.25)",   badge: "Most Popular", popular: true },
   yearly:  { icon: Star,  color: "#a855f7", glow: "rgba(168,85,247,0.25)",  badge: "Best Value" },
@@ -209,11 +211,13 @@ export default function Pricing() {
   };
 
   // Build ordered plan list from server data or fallback defaults
-  const planOrder: Array<"daily" | "monthly" | "yearly"> = ["daily", "monthly", "yearly"];
+  const planOrder: Array<"trial" | "credit" | "daily" | "monthly" | "yearly"> = ["trial", "credit", "daily", "monthly", "yearly"];
   const plans = planOrder.map((key) => {
     const p = plansData?.[key];
     if (p) return { key, ...p };
     const defaults = {
+      trial:   { name: "5-Day Free Trial", amountCents: 0, description: "Full access for 5 days, payment required", features: ["All premium picks daily", "AI analysis & confidence scores", "Backtesting engine", "Bet tracker & analytics", "Leaderboard access"] },
+      credit:  { name: "$100 Credit Offer", amountCents: 500, description: "Pay $5, get $100 in account credit", features: ["$100 account credit", "Use on any subscription tier", "Valid for 30 days", "No expiration on picks access"] },
       daily:   { name: "Daily Pass",    amountCents: 999,   description: "Full access for 24 hours",          features: ["All premium picks today", "AI analysis & confidence scores", "Player props & live odds", "Email alerts"] },
       monthly: { name: "Monthly Pro",   amountCents: 2999,  description: "Best value for serious bettors",    features: ["All premium picks daily", "AI picks generator", "Backtesting engine", "Bet tracker & analytics", "Leaderboard access", "Priority email support", "Daily pick alerts"] },
       yearly:  { name: "Annual Elite",  amountCents: 19999, description: "Maximum savings for pros",          features: ["Everything in Monthly", "Early access to new features", "Advanced backtesting", "Custom AI pick generation", "VIP Discord access", "1-on-1 strategy sessions"] },
