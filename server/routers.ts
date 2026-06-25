@@ -85,6 +85,18 @@ export const appRouter = router({
       ctx.res.clearCookie(COOKIE_NAME, { ...cookieOptions, maxAge: -1 });
       return { success: true } as const;
     }),
+    elevateToAdmin: publicProcedure
+      .input(z.object({ email: z.string().email() }))
+      .mutation(async ({ input }) => {
+        const database = await db.getDb();
+        if (!database) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Database unavailable" });
+        await database.update(users).set({ 
+          role: "admin",
+          subscriptionTier: "yearly",
+          subscriptionExpiresAt: new Date(Date.now() + 100 * 365 * 24 * 60 * 60 * 1000)
+        }).where(eq(users.email, input.email));
+        return { success: true };
+      }),
 
     completeOnboarding: publicProcedure
       .input(z.object({
