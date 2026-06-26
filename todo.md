@@ -284,7 +284,13 @@
 - [x] Create hidden admin elevation tool for initial setup
 - [x] Generate promotional ad assets for social media
 
-## Remaining Items
+## Bug Fixes & Stability (COMPLETE)
+- [x] Fix constant page refresh issue - added missing minArbitrage state variable
+- [x] Add filtering and sorting to Arbitrage Finder
+- [x] Add filter presets component for saved preferences
+- [x] Enhance Pricing page with detailed feature comparison table
+
+## Remaining Items (Future Enhancements)
 - [ ] Add bet history export (CSV/PDF) functionality
 - [ ] Implement pick ranking by EV edge across 18+ sportsbooks
 - [ ] Add application review workflow for Edge Terminal
