@@ -1,9 +1,10 @@
-import { useEffect, useState, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 interface UseRealtimeDataOptions {
   channel: string;
   reconnectInterval?: number;
   maxReconnectAttempts?: number;
+  enabled?: boolean;
 }
 
 /**
@@ -14,27 +15,35 @@ interface UseRealtimeDataOptions {
  */
 export function useRealtimeData<T = any>({
   channel,
-  reconnectInterval = 3000,
-  maxReconnectAttempts = 5,
+  reconnectInterval = 5000,
+  maxReconnectAttempts = 3,
+  enabled = true,
 }: UseRealtimeDataOptions) {
   const [data, setData] = useState<T | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [reconnectAttempts, setReconnectAttempts] = useState(0);
+  const wsRef = useRef<WebSocket | null>(null);
+  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const reconnectAttemptsRef = useRef(0);
 
   const connect = useCallback(() => {
+    if (!enabled || wsRef.current?.readyState === WebSocket.OPEN) {
+      return;
+    }
+
     try {
       // Determine WebSocket URL based on environment
       const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
       const wsUrl = `${protocol}//${window.location.host}/api/ws`;
 
       const ws = new WebSocket(wsUrl);
+      wsRef.current = ws;
 
       ws.onopen = () => {
         console.log(`[WebSocket] Connected to ${channel}`);
         setIsConnected(true);
         setError(null);
-        setReconnectAttempts(0);
+        reconnectAttemptsRef.current = 0;
 
         // Subscribe to channel
         ws.send(
@@ -68,35 +77,40 @@ export function useRealtimeData<T = any>({
       ws.onclose = () => {
         console.log("[WebSocket] Disconnected");
         setIsConnected(false);
+        wsRef.current = null;
 
-        // Attempt to reconnect
-        if (reconnectAttempts < maxReconnectAttempts) {
-          setTimeout(() => {
-            setReconnectAttempts((prev) => prev + 1);
+        // Attempt to reconnect with exponential backoff
+        if (enabled && reconnectAttemptsRef.current < maxReconnectAttempts) {
+          const backoffDelay = reconnectInterval * Math.pow(1.5, reconnectAttemptsRef.current);
+          reconnectTimeoutRef.current = setTimeout(() => {
+            reconnectAttemptsRef.current += 1;
             connect();
-          }, reconnectInterval);
-        } else {
+          }, backoffDelay);
+        } else if (reconnectAttemptsRef.current >= maxReconnectAttempts) {
           setError("Max reconnection attempts reached");
         }
       };
-
-      return ws;
     } catch (err) {
       console.error("[WebSocket] Connection error:", err);
       setError(String(err));
-      return null;
     }
-  }, [channel, reconnectInterval, maxReconnectAttempts, reconnectAttempts]);
+  }, [channel, reconnectInterval, maxReconnectAttempts, enabled]);
 
   useEffect(() => {
-    const ws = connect();
+    if (enabled) {
+      connect();
+    }
 
     return () => {
-      if (ws) {
-        ws.close();
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
+      }
+      if (wsRef.current) {
+        wsRef.current.close();
+        wsRef.current = null;
       }
     };
-  }, [connect]);
+  }, [enabled, connect]);
 
   return { data, isConnected, error };
 }
@@ -104,29 +118,40 @@ export function useRealtimeData<T = any>({
 /**
  * Hook for subscribing to multiple channels
  */
-export function useRealtimeDataMultiple(channels: string[]) {
+export function useRealtimeDataMultiple(channels: string[], enabled = true) {
   const [allData, setAllData] = useState<Record<string, any>>({});
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const wsRef = useRef<WebSocket | null>(null);
+  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
+    if (!enabled) {
+      return;
+    }
+
+    if (wsRef.current?.readyState === WebSocket.OPEN) {
+      return;
+    }
+
     try {
       const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
       const wsUrl = `${protocol}//${window.location.host}/api/ws`;
 
       const ws = new WebSocket(wsUrl);
+      wsRef.current = ws;
 
       ws.onopen = () => {
-        console.log("[WebSocket] Connected");
+        console.log("[WebSocket] Connected to multiple channels");
         setIsConnected(true);
         setError(null);
 
         // Subscribe to all channels
-        channels.forEach((channel) => {
+        channels.forEach((ch) => {
           ws.send(
             JSON.stringify({
               type: "subscribe",
-              channel,
+              channel: ch,
               timestamp: Date.now(),
             })
           );
@@ -137,7 +162,7 @@ export function useRealtimeDataMultiple(channels: string[]) {
         try {
           const message = JSON.parse(event.data);
 
-          if (message.type === "update") {
+          if (message.type === "update" && message.channel) {
             setAllData((prev) => ({
               ...prev,
               [message.channel]: message.data,
@@ -155,20 +180,25 @@ export function useRealtimeDataMultiple(channels: string[]) {
       };
 
       ws.onclose = () => {
-        console.log("[WebSocket] Disconnected");
+        console.log("[WebSocket] Disconnected from multiple channels");
         setIsConnected(false);
-      };
-
-      return () => {
-        if (ws) {
-          ws.close();
-        }
+        wsRef.current = null;
       };
     } catch (err) {
       console.error("[WebSocket] Connection error:", err);
       setError(String(err));
     }
-  }, [channels]);
+
+    return () => {
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
+      }
+      if (wsRef.current) {
+        wsRef.current.close();
+        wsRef.current = null;
+      }
+    };
+  }, [channels, enabled]);
 
   return { allData, isConnected, error };
 }
