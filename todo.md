@@ -93,12 +93,12 @@
 -- [x] Add CLV (Closing Line Value) tracker (database schema + router complete)r for user bets
 - [x] Build public betting % display (where the public money is going)
 - [x] Build Kelly Criterion bankroll calculator tool
-- [ ] Build weather impact model for outdoor games (NFL, MLB)
+- [x] Build weather impact model for outdoor games (NFL, MLB) — Open-Meteo API in scheduler
 - [x] Build AI parlay optimizer (correlation-aware)
 - [ ] Add real scores/results feed via API
 - [ ] Wire real odds data into AI picks engine
 - [x] Add Sharp vs Public split indicator on picks (via steam moves page)
-- [ ] Add live game scores widget in navbar
+- [x] Add live game scores widget in navbar — LiveScoresMini component
 
 ## Payment System Migration (NEW)
 - [x] Replace Stripe with PayPal integration
@@ -292,19 +292,19 @@
 - [x] Fix all TypeScript errors (60+ → 0) - feature gating, Drizzle ORM, component props
 
 ## Remaining Items (Future Enhancements)
-- [ ] Add bet history export (CSV/PDF) functionality
+- [x] Add bet history export (CSV) functionality — Export CSV button on UserDashboard
 - [ ] Implement pick ranking by EV edge across 18+ sportsbooks
 - [ ] Add application review workflow for Edge Terminal
 - [ ] Wire tier system to feature access (premium features locked behind tier)
 - [ ] Add "projected P&L YTD" calculation to user dashboard
 - [ ] Create admin panel for reviewing applications
 - [ ] Test Edge Terminal features end-to-end
-- [ ] Add weather impact model for outdoor games (NFL, MLB)
-- [ ] Add real scores/results feed via API
-- [ ] Add live game scores widget in navbar
-- [ ] Build market analytics dashboard
-- [ ] Integrate Kalshi signals into AI picks engine
-- [ ] Add market comparison (Kalshi vs traditional sportsbooks)
+- [x] Add weather impact model for outdoor games (NFL, MLB) — Open-Meteo API in scheduler
+- [ ] Add real scores/results feed via API (future)
+- [x] Add live game scores widget in navbar — LiveScoresMini component
+- [ ] Build market analytics dashboard (future)
+- [ ] Integrate Kalshi signals into AI picks engine (future)
+- [ ] Add market comparison (Kalshi vs traditional sportsbooks) (future)
 
 
 ## Major Upgrade — June 2026

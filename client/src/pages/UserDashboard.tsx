@@ -22,6 +22,48 @@ import {
 const SPORTS = ["nfl", "nba", "mlb", "nhl", "soccer", "other"];
 const BET_TYPES = ["moneyline", "spread", "over_under", "player_prop", "parlay", "other"];
 
+function ExportCSVButton() {
+  const { isAuthenticated } = useAuth();
+  const { data: allBets, refetch, isFetching } = trpc.bets.list.useQuery(
+    { result: "all", limit: 5000, offset: 0 },
+    { enabled: false }
+  );
+  const handleExport = async () => {
+    const result = await refetch();
+    const bets = result.data?.bets ?? [];
+    if (!bets.length) { toast.error("No bets to export"); return; }
+    const header = ["Date","Description","Sport","Type","Odds","Stake","Payout","Result","Profit/Loss","Notes"];
+    const rows = (bets as any[]).map((b: any) => [
+      b.betDate ?? new Date(b.createdAt).toISOString().split("T")[0],
+      `"${(b.description ?? "").replace(/"/g, '""')}"`,
+      b.sportKey ?? "",
+      b.betType ?? "",
+      b.odds?.toString() ?? "",
+      b.stake?.toString() ?? "",
+      b.potentialPayout?.toString() ?? "",
+      b.result ?? "pending",
+      b.profit?.toString() ?? "0",
+      `"${(b.notes ?? "").replace(/"/g, '""')}"`
+    ]);
+    const csv = [header.join(","), ...rows.map((r: any[]) => r.join(","))].join("\n");
+    const blob = new Blob([csv], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `chalkpicks-bets-${new Date().toISOString().split("T")[0]}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast.success(`Exported ${bets.length} bets!`);
+  };
+  if (!isAuthenticated) return null;
+  return (
+    <Button variant="outline" className="h-9 text-sm font-bold" onClick={handleExport} disabled={isFetching}>
+      <Download className="w-4 h-4 mr-1.5" />
+      {isFetching ? "Exporting..." : "Export CSV"}
+    </Button>
+  );
+}
+
 export default function UserDashboard() {
   const { isAuthenticated, user, loading } = useAuth();
   const [addOpen, setAddOpen] = useState(false);
@@ -150,37 +192,7 @@ export default function UserDashboard() {
                     <DollarSign className="w-3 h-3" /> Balance: ${(mySubscription.accountBalance / 100).toFixed(2)}
                   </Badge>
                 )}
-                <Button
-                  variant="outline"
-                  className="h-9 text-sm font-bold"
-                  onClick={() => {
-                    if (!betsData?.bets?.length) { toast.error("No bets to export"); return; }
-                    const header = ["Date","Description","Sport","Type","Odds","Stake","Payout","Result","Profit/Loss","Notes"];
-                    const rows = (betsData.bets as any[]).map((b: any) => [
-                      b.betDate ?? new Date(b.createdAt).toISOString().split("T")[0],
-                      `"${(b.description ?? "").replace(/"/g, '""')}"`,
-                      b.sportKey ?? "",
-                      b.betType ?? "",
-                      b.odds?.toString() ?? "",
-                      b.stake?.toString() ?? "",
-                      b.potentialPayout?.toString() ?? "",
-                      b.result ?? "pending",
-                      b.profit?.toString() ?? "0",
-                      `"${(b.notes ?? "").replace(/"/g, '""')}"`
-                    ]);
-                    const csv = [header.join(","), ...rows.map((r: any[]) => r.join(","))].join("\n");
-                    const blob = new Blob([csv], { type: "text/csv" });
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement("a");
-                    a.href = url;
-                    a.download = `chalkpicks-bets-${new Date().toISOString().split("T")[0]}.csv`;
-                    a.click();
-                    URL.revokeObjectURL(url);
-                    toast.success("Bet history exported!");
-                  }}
-                >
-                  <Download className="w-4 h-4 mr-1.5" /> Export CSV
-                </Button>
+                <ExportCSVButton />
                 <Dialog open={addOpen} onOpenChange={setAddOpen}>
                   <DialogTrigger asChild>
                     <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold h-9">
