@@ -166,6 +166,8 @@ export default function UserDashboard() {
                 totalBets={summary.totalBets || 0}
                 winningBets={summary.wins || 0}
                 totalProfit={parseFloat(summary.totalProfit?.toString() || "0")}
+                roi={summary.roi || 0}
+                projectedPLYTD={summary.projectedPLYTD || 0}
               />
             </div>
           </div>

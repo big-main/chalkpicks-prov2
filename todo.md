@@ -236,7 +236,7 @@
 - [ ] Implement pick ranking by EV edge across 18+ sportsbooks
 - [ ] Add application review workflow (hand-reviewed applications with 24-hour response)
 - [ ] Wire tier system to feature access (premium features locked behind tier)
-- [ ] Add "projected P&L YTD" calculation to user dashboard
+- [x] Add "projected P&L YTD" calculation to user dashboard — annualized from YTD daily average
 - [x] Create admin panel for reviewing applications — /admin route with overview, user mgmt, subscriptions, picks engine tabs
 - [ ] Test Edge Terminal features end-to-end
 
@@ -296,7 +296,7 @@
 - [ ] Implement pick ranking by EV edge across 18+ sportsbooks
 - [ ] Add application review workflow for Edge Terminal
 - [ ] Wire tier system to feature access (premium features locked behind tier)
-- [ ] Add "projected P&L YTD" calculation to user dashboard
+- [x] Add "projected P&L YTD" calculation to user dashboard — annualized from YTD daily average
 - [x] Create admin panel for reviewing applications — /admin route with overview, user mgmt, subscriptions, picks engine tabs
 - [ ] Test Edge Terminal features end-to-end
 - [x] Add weather impact model for outdoor games (NFL, MLB) — Open-Meteo API in scheduler
@@ -330,4 +330,4 @@
 - [x] Add Admin Panel link to user dropdown (visible to admins only)
 - [x] 0 TypeScript errors after all changes
 - [ ] Implement full application review workflow in admin panel (future enhancement)
-- [ ] Add projected P&L YTD to user dashboard (future enhancement)
+- [x] Add projected P&L YTD to user dashboard — annualized from YTD daily average

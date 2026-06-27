@@ -57,7 +57,7 @@ export default function DashboardMetrics({
         </CardHeader>
         <CardContent>
           <div className={`text-3xl font-bold ${projectedPLYTD >= 0 ? "text-cyan-400" : "text-red-400"}`}>
-            {projectedPLYTD >= 0 ? "+" : ""}${Math.abs(totalProfit).toFixed(0)}
+            {projectedPLYTD >= 0 ? "+" : "-"}${Math.abs(projectedPLYTD).toFixed(0)}
           </div>
           <p className="text-xs text-slate-400 mt-1">{projectedPLYTD >= 0 ? "Positive" : "Negative"} edge</p>
         </CardContent>

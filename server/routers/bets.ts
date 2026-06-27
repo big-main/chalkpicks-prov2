@@ -151,6 +151,18 @@ export const betsRouter = router({
       else break;
     }
 
+    // Projected P&L YTD: extrapolate current ROI over full year
+    const now = new Date();
+    const startOfYear = new Date(now.getFullYear(), 0, 1);
+    const dayOfYear = Math.ceil((now.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24));
+    const ytdBets = allBets.filter(b => {
+      const d = b.betDate ?? (b.createdAt ? new Date(b.createdAt).toISOString().split("T")[0] : "");
+      return d >= `${now.getFullYear()}-01-01`;
+    });
+    const ytdProfit = ytdBets.reduce((sum, b) => sum + Number(b.profit ?? 0), 0);
+    const avgDailyProfit = dayOfYear > 0 ? ytdProfit / dayOfYear : 0;
+    const projectedPLYTD = Math.round(avgDailyProfit * 365 * 100) / 100;
+
     return {
       totalBets: allBets.length,
       wins,
@@ -161,6 +173,7 @@ export const betsRouter = router({
       totalProfit: Math.round(totalProfit * 100) / 100,
       totalStaked: Math.round(totalStaked * 100) / 100,
       streak,
+      projectedPLYTD,
     };
   }),
 });
