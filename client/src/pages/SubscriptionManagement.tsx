@@ -1,10 +1,44 @@
-import { useAuth } from "@/_core/hooks/useAuth";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AlertCircle, CheckCircle2, Calendar, CreditCard, Download } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { useLocation } from "wouter";
+import { useAuth } from "@/_core/hooks/useAuth";
+
+function ManageBillingButton() {
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [error, setError] = React.useState("");
+  const billingMutation = trpc.subscription.getBillingPortalUrl.useMutation({
+    onSuccess: (data) => {
+      window.location.href = data.url;
+    },
+    onError: (err) => {
+      setError(err.message || "Failed to open billing portal");
+      setIsLoading(false);
+    },
+  });
+
+  const handleClick = () => {
+    setIsLoading(true);
+    setError("");
+    billingMutation.mutate({ origin: window.location.origin });
+  };
+
+  return (
+    <>
+      <Button
+        onClick={handleClick}
+        disabled={isLoading || billingMutation.isPending}
+        className="w-full"
+      >
+        {isLoading || billingMutation.isPending ? "Loading..." : "Manage Billing in Stripe"}
+      </Button>
+      {error && <p className="text-red-400 text-sm mt-2">{error}</p>}
+    </>
+  );
+}
 
 export default function SubscriptionManagement() {
   const { user, isAuthenticated } = useAuth();
@@ -148,6 +182,21 @@ export default function SubscriptionManagement() {
               </CardContent>
             </Card>
 
+            {/* Manage Billing */}
+            {subscription?.isActive && (
+              <Card className="mb-6 border-blue-500/20 bg-blue-500/5">
+                <CardHeader>
+                  <CardTitle className="text-blue-400">Manage Billing</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Update your payment method, billing address, and subscription settings in Stripe
+                  </p>
+                  <ManageBillingButton />
+                </CardContent>
+              </Card>
+            )}
+
             {/* Billing History */}
             <Card>
               <CardHeader>
@@ -222,8 +271,8 @@ export default function SubscriptionManagement() {
                   </div>
                   <p className="text-xs text-muted-foreground">Expires 12/26</p>
                 </div>
-                <Button variant="outline" className="w-full text-sm">
-                  Update Payment Method
+                <Button variant="outline" className="w-full text-sm" disabled>
+                  Update via Stripe Portal
                 </Button>
               </CardContent>
             </Card>
@@ -240,8 +289,8 @@ export default function SubscriptionManagement() {
                   <p className="text-sm text-muted-foreground">123 Main Street</p>
                   <p className="text-sm text-muted-foreground">New York, NY 10001</p>
                 </div>
-                <Button variant="outline" className="w-full text-sm">
-                  Edit Address
+                <Button variant="outline" className="w-full text-sm" disabled>
+                  Edit via Stripe Portal
                 </Button>
               </CardContent>
             </Card>

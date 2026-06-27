@@ -222,4 +222,33 @@ export const subscriptionRouter = router({
 
     return { success: true };
   }),
+
+  getBillingPortalUrl: protectedProcedure
+    .input(z.object({
+      origin: z.string(),
+    }))
+    .mutation(async ({ input, ctx }) => {
+      const db = await getDb();
+      if (!db) throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+
+      const user = await db.select({
+        stripeCustomerId: users.stripeCustomerId,
+      }).from(users).where(eq(users.id, ctx.user.id)).limit(1);
+
+      const u = user[0];
+      if (!u?.stripeCustomerId) {
+        throw new TRPCError({ code: "NOT_FOUND", message: "No Stripe customer found" });
+      }
+
+      try {
+        const session = await stripe.billingPortal.sessions.create({
+          customer: u.stripeCustomerId,
+          return_url: input.origin + "/subscriptions",
+        });
+        return { url: session.url };
+      } catch (err) {
+        console.error("Stripe billing portal error:", err);
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR", message: "Failed to create billing portal session" });
+      }
+    }),
 });
