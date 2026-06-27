@@ -60,7 +60,7 @@ export function registerStripeWebhook(app: express.Application) {
             } else if (tier === "credit") {
               // Credit offer: add $100 to account balance
               accountBalanceToAdd = 10000; // $100 in cents
-              subscriptionTier = "free";
+              subscriptionTier = "trial";
               expiresAt = null as any;
             } else if (tier === "daily") {
               expiresAt.setDate(expiresAt.getDate() + 1);

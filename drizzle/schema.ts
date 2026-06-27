@@ -251,7 +251,7 @@ export const subscriptionOrders = mysqlTable("subscription_orders", {
   userId: int("userId").notNull(),
   stripeSessionId: varchar("stripeSessionId", { length: 128 }),
   stripeSubscriptionId: varchar("stripeSubscriptionId", { length: 128 }),
-  tier: mysqlEnum("tier", ["trial", "daily", "monthly", "yearly"]).notNull(),
+  tier: mysqlEnum("tier", ["trial", "credit", "daily", "monthly", "yearly"]).notNull(),
   status: mysqlEnum("status", ["pending", "active", "cancelled", "expired"]).default("pending").notNull(),
   amountCents: int("amountCents").notNull(),
   currency: varchar("currency", { length: 8 }).default("usd").notNull(),

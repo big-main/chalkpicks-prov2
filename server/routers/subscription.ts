@@ -200,7 +200,7 @@ export const subscriptionRouter = router({
       } else if (input.tier === "credit") {
         // Credit offer: add $100 to account balance, keep existing subscription tier
         accountBalanceToAdd = 10000; // $100 in cents
-        subscriptionTier = "free"; // Don't change subscription tier for credit offer
+        subscriptionTier = "trial"; // Keep as trial for credit offer
         expiresAt = null as any; // No expiration for credit
       } else if (input.tier === "daily") {
         expiresAt.setDate(expiresAt.getDate() + 1);

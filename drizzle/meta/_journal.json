@@ -71,6 +71,13 @@
       "when": 1782171381162,
       "tag": "0009_volatile_whistler",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1782543447200,
+      "tag": "0010_red_wallflower",
+      "breakpoints": true
     }
   ]
 }
